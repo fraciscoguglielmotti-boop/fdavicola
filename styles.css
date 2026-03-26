@@ -334,23 +334,6 @@ section[id]{
 .card.mini .card-img{ height: 160px; }
 .card.mini .card-body{ padding: 16px; }
 
-/* Service icon visuals */
-.service-icon-wrap{
-  height: 160px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(255,255,255,.95);
-}
-.service-icon-1{
-  background: linear-gradient(135deg, #0f5a45 0%, #0d7a5c 100%);
-}
-.service-icon-2{
-  background: linear-gradient(135deg, #1a5fa0 0%, #1e79c4 100%);
-}
-.service-icon-3{
-  background: linear-gradient(135deg, #128C7E 0%, #16a898 100%);
-}
 
 /* Contact */
 .contact{
@@ -465,7 +448,7 @@ section[id]{
   .hero{ padding: 78px 0 64px; background-image:
     linear-gradient(180deg, rgba(7,31,27,.90) 0%, rgba(7,31,27,.50) 45%, rgba(7,31,27,.90) 100%),
     url("assets/hero.jpg"); }
-  .btn-secondary{ border-color: rgba(15,23,42,.14); }
+  .btn-secondary{ border-color: rgba(15,23,42,.25); }
   .hero-copy{ width: 100%; }
 }
 
