@@ -446,8 +446,9 @@ section[id]{
   .cards.three-col{ grid-template-columns: 1fr; }
   .contact-grid{ grid-template-columns: 1fr; }
   .hero{ padding: 78px 0 64px; background-image:
-    linear-gradient(180deg, rgba(7,31,27,.90) 0%, rgba(7,31,27,.50) 45%, rgba(7,31,27,.90) 100%),
-    url("assets/hero.jpg"); }
+    linear-gradient(180deg, rgba(7,31,27,.95) 0%, rgba(7,31,27,.88) 100%),
+    url("assets/hero.jpg");
+    background-position: center right; }
   .btn-secondary{ border-color: rgba(15,23,42,.25); }
   .hero-copy{ width: 100%; }
 }
