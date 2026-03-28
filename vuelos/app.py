@@ -111,8 +111,8 @@ def _serialize_flight(flight):
             "flight_number": leg.flight_number or "",
             "departure_airport": dep_ap,
             "arrival_airport": arr_ap,
-            "departure_time": str(leg.departure_time) if leg.departure_time else None,
-            "arrival_time": str(leg.arrival_time) if leg.arrival_time else None,
+            "departure_time": str(leg.departure_datetime) if leg.departure_datetime else None,
+            "arrival_time": str(leg.arrival_datetime) if leg.arrival_datetime else None,
             "duration": leg.duration,
         })
 
