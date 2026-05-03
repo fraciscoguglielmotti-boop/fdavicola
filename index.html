@@ -69,6 +69,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Leaflet (mapa interactivo de cobertura) -->
+  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css" />
 </head>
 
 <body>
@@ -329,48 +332,67 @@
     <!-- COBERTURA -->
     <section id="cobertura" class="section section-soft">
       <div class="container">
-        <div class="coverage">
-          <div class="coverage-text">
-            <span class="section-eyebrow">Cobertura</span>
-            <h2>Distribuimos en CABA y Gran Buenos Aires</h2>
-            <p class="muted">Recorrido programado. Si tu zona no aparece en la lista, escribinos: estamos sumando rutas.</p>
-            <div class="zones" aria-label="Zonas de cobertura">
-              <span class="zone-chip">CABA</span>
-              <span class="zone-chip">GBA Norte</span>
-              <span class="zone-chip">GBA Oeste</span>
-              <span class="zone-chip">GBA Sur</span>
-              <span class="zone-chip">La Matanza</span>
-              <span class="zone-chip">Quilmes</span>
-              <span class="zone-chip">San Martín</span>
-              <span class="zone-chip">Vicente López</span>
+        <header class="section-head">
+          <span class="section-eyebrow">Cobertura</span>
+          <h2>Verificá si llegamos a tu zona</h2>
+          <p>Tenemos dos modalidades de entrega según la zona. Consultá el mapa o escribinos por WhatsApp con tu dirección.</p>
+        </header>
+
+        <div class="coverage-modes">
+          <article class="mode mode-primary">
+            <div class="mode-head">
+              <span class="mode-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-truck"/></svg></span>
+              <div>
+                <span class="mode-tag">Reparto programado</span>
+                <h3>Sin compra mínima</h3>
+              </div>
             </div>
+            <p>Hacemos reparto programado en <strong>GBA Norte</strong> con frecuencia semanal o quincenal. No hay pedido mínimo.</p>
+            <ul class="zones" aria-label="Zonas con reparto programado">
+              <li class="zone-chip is-active">Vicente López</li>
+              <li class="zone-chip is-active">San Isidro</li>
+              <li class="zone-chip is-active">San Fernando</li>
+              <li class="zone-chip is-active">Tigre</li>
+              <li class="zone-chip is-active">San Martín</li>
+            </ul>
+          </article>
+
+          <article class="mode mode-secondary">
+            <div class="mode-head">
+              <span class="mode-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg></span>
+              <div>
+                <span class="mode-tag">Entrega a demanda</span>
+                <h3>Mínimo 200 cajones de pollo</h3>
+              </div>
+            </div>
+            <p>Llevamos pedidos a otras zonas con un mínimo de <strong>200 cajones de pollo</strong>. Coordinamos día y horario por WhatsApp.</p>
+            <ul class="zones" aria-label="Zonas con entrega a demanda">
+              <li class="zone-chip">CABA</li>
+              <li class="zone-chip">GBA Oeste</li>
+              <li class="zone-chip">GBA Sur</li>
+              <li class="zone-chip">La Matanza</li>
+              <li class="zone-chip">Quilmes</li>
+              <li class="zone-chip">Otras zonas</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="map-block">
+          <div class="map-block-head">
+            <h3>Mapa interactivo</h3>
+            <div class="map-legend" aria-label="Referencias del mapa">
+              <span class="legend-item"><span class="dot dot-primary" aria-hidden="true"></span> Reparto programado · sin mínimo</span>
+              <span class="legend-item"><span class="dot dot-secondary" aria-hidden="true"></span> Entrega con mínimo de 200 cajones</span>
+            </div>
+          </div>
+          <div id="coverage-map" class="map" role="region" aria-label="Mapa de zonas de cobertura"></div>
+          <p class="map-foot">
+            ¿No estás seguro si llegamos a tu zona?
             <a class="btn btn-dark" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20saber%20si%20llegan%20a%20mi%20zona:%20____" target="_blank" rel="noopener">
               <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
               Consultar mi zona
             </a>
-          </div>
-
-          <div class="coverage-card">
-            <h3>¿Cómo trabajamos el reparto?</h3>
-            <ul class="coverage-list">
-              <li>
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg>
-                <div><strong>Frecuencia flexible</strong><span>Semanal o quincenal según tu volumen.</span></div>
-              </li>
-              <li>
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-truck"/></svg>
-                <div><strong>Ventana horaria coordinada</strong><span>Te avisamos día y franja antes de salir.</span></div>
-              </li>
-              <li>
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-snow"/></svg>
-                <div><strong>Cadena de frío sostenida</strong><span>Producto refrigerado durante todo el recorrido.</span></div>
-              </li>
-              <li>
-                <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg>
-                <div><strong>Manipulación cuidada</strong><span>Carga, descarga e higiene del transporte controladas.</span></div>
-              </li>
-            </ul>
-          </div>
+          </p>
         </div>
       </div>
     </section>
@@ -386,15 +408,22 @@
         <div class="faq">
           <details class="faq-item" open>
             <summary class="faq-q">¿Hay un pedido mínimo?</summary>
-            <div class="faq-a">Trabajamos por cajón. Para coordinar el primer reparto te indicamos el mínimo conveniente según tu zona y frecuencia.</div>
+            <div class="faq-a">
+              <strong>Depende de tu zona:</strong>
+              <ul>
+                <li><strong>GBA Norte</strong> (Vicente López, San Isidro, San Fernando, Tigre, San Martín): tenemos reparto programado, <strong>sin compra mínima</strong>.</li>
+                <li><strong>Otras zonas</strong> (CABA, GBA Oeste, GBA Sur, La Matanza, Quilmes, etc.): entregamos a demanda con un mínimo de <strong>200 cajones de pollo</strong>.</li>
+              </ul>
+              Si no estás seguro de tu caso, escribinos por WhatsApp con tu dirección y te confirmamos.
+            </div>
           </details>
           <details class="faq-item">
             <summary class="faq-q">¿A qué zonas llegan?</summary>
-            <div class="faq-a">CABA y GBA según recorrido programado. Si tu zona no aparece, escribinos por WhatsApp y evaluamos sumarla a la próxima ruta.</div>
+            <div class="faq-a">Tenemos reparto programado en GBA Norte (sin mínimo) y entrega a demanda en otras zonas (mínimo 200 cajones de pollo). Mirá el mapa interactivo en la sección Cobertura para verificar si tu zona está incluida.</div>
           </details>
           <details class="faq-item">
             <summary class="faq-q">¿Con qué frecuencia entregan?</summary>
-            <div class="faq-a">Semanal o quincenal. Te armamos el reparto que mejor se adapte a tu volumen y rotación.</div>
+            <div class="faq-a">En GBA Norte: reparto programado semanal o quincenal según tu volumen. En el resto de las zonas: entregas a demanda coordinadas por WhatsApp.</div>
           </details>
           <details class="faq-item">
             <summary class="faq-q">¿Cómo se cotiza el pedido?</summary>
@@ -482,6 +511,7 @@
     </div>
   </footer>
 
+  <script src="assets/vendor/leaflet/leaflet.js" defer></script>
   <script src="script.js" defer></script>
 </body>
 </html>
