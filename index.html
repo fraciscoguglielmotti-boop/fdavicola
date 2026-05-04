@@ -7,6 +7,8 @@
   <meta name="description" content="Distribución mayorista de pollo refrigerado El Fortín y huevos en CABA y GBA. Cadena de frío garantizada, reparto programado. Cotizá por WhatsApp." />
   <link rel="canonical" href="https://fdavicola.com/" />
   <meta name="google-site-verification" content="d9ZBiQqTzZvdTkhLTXdJiPAX7LXYRaggsgXOl8l6n3w" />
+  <meta name="theme-color" content="#0f5a45" />
+  <meta name="author" content="FD Avícola" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
@@ -16,6 +18,12 @@
   <meta property="og:image" content="https://fdavicola.com/assets/hero.jpg" />
   <meta property="og:locale" content="es_AR" />
   <meta property="og:site_name" content="FD Avícola" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FD Avícola | Distribución mayorista de pollo en Buenos Aires" />
+  <meta name="twitter:description" content="Pollo refrigerado El Fortín y huevos al por mayor. Cadena de frío y reparto programado en CABA y GBA." />
+  <meta name="twitter:image" content="https://fdavicola.com/assets/hero.jpg" />
 
   <!-- Schema: LocalBusiness -->
   <script type="application/ld+json">
@@ -28,6 +36,8 @@
     "url": "https://fdavicola.com/",
     "telephone": "+541139467076",
     "email": "contacto@fdavicola.com",
+    "image": "https://fdavicola.com/assets/hero.jpg",
+    "logo": "https://fdavicola.com/assets/logo.png",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Buenos Aires",
@@ -40,12 +50,13 @@
     ],
     "servesCuisine": "Avícola mayorista",
     "priceRange": "$$",
+    "paymentAccepted": "Efectivo, Transferencia bancaria",
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "+541139467076",
       "contactType": "sales",
-      "contactOption": "TollFree",
-      "availableLanguage": "Spanish"
+      "availableLanguage": "Spanish",
+      "areaServed": "AR"
     },
     "sameAs": [
       "https://www.facebook.com/profile.php?id=61587528465337"
@@ -54,225 +65,453 @@
   </script>
 
   <link rel="icon" href="assets/logo.png" />
+  <link rel="preload" as="image" href="assets/hero.jpg" fetchpriority="high" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Leaflet (mapa interactivo de cobertura) -->
+  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css" />
 </head>
 
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-  <!-- SVG icons -->
-  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true" focusable="false">
-    <symbol id="icon-whatsapp" viewBox="0 0 32 32">
-      <path d="M16.02 2.67c-7.2 0-13.06 5.73-13.06 12.78 0 2.26.62 4.47 1.8 6.4L3 29.33l7.73-1.99c1.92 1.02 4.08 1.56 6.3 1.56 7.2 0 13.06-5.73 13.06-12.78S23.23 2.67 16.02 2.67Zm0 23.85c-2 0-3.93-.52-5.62-1.5l-.4-.23-4.58 1.18 1.22-4.34-.27-.42a10.93 10.93 0 0 1-1.73-5.9c0-6.04 5.06-10.95 11.38-10.95s11.38 4.91 11.38 10.95-5.06 10.96-11.38 10.96Zm6.36-8.22c-.35-.17-2.08-1.02-2.4-1.14-.32-.12-.55-.17-.78.17-.23.35-.9 1.14-1.1 1.37-.2.23-.4.26-.75.09-.35-.17-1.47-.53-2.8-1.69-1.04-.9-1.74-2.01-1.94-2.36-.2-.35-.02-.54.15-.71.15-.15.35-.4.52-.6.17-.2.23-.35.35-.57.12-.23.06-.43-.03-.6-.09-.17-.78-1.83-1.07-2.5-.28-.66-.56-.57-.78-.58h-.67c-.23 0-.6.09-.92.43-.32.35-1.21 1.17-1.21 2.86s1.24 3.33 1.42 3.56c.17.23 2.45 3.85 5.94 5.4.83.36 1.48.58 1.99.75.84.26 1.61.22 2.22.13.68-.1 2.08-.84 2.37-1.65.29-.81.29-1.5.2-1.65-.09-.15-.32-.24-.67-.41Z"/>
+  <!-- SVG icon set -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="i-whatsapp" viewBox="0 0 32 32">
+      <path d="M16.02 2.67c-7.2 0-13.06 5.73-13.06 12.78 0 2.26.62 4.47 1.8 6.4L3 29.33l7.73-1.99c1.92 1.02 4.08 1.56 6.3 1.56 7.2 0 13.06-5.73 13.06-12.78S23.23 2.67 16.02 2.67Zm6.36 15.63c-.35-.17-2.08-1.02-2.4-1.14-.32-.12-.55-.17-.78.17-.23.35-.9 1.14-1.1 1.37-.2.23-.4.26-.75.09-.35-.17-1.47-.53-2.8-1.69-1.04-.9-1.74-2.01-1.94-2.36-.2-.35-.02-.54.15-.71.15-.15.35-.4.52-.6.17-.2.23-.35.35-.57.12-.23.06-.43-.03-.6-.09-.17-.78-1.83-1.07-2.5-.28-.66-.56-.57-.78-.58h-.67c-.23 0-.6.09-.92.43-.32.35-1.21 1.17-1.21 2.86s1.24 3.33 1.42 3.56c.17.23 2.45 3.85 5.94 5.4.83.36 1.48.58 1.99.75.84.26 1.61.22 2.22.13.68-.1 2.08-.84 2.37-1.65.29-.81.29-1.5.2-1.65-.09-.15-.32-.24-.67-.41Z"/>
     </symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.32.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2Z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 2a8 8 0 0 0-8 8c0 5.5 8 12 8 12s8-6.5 8-12a8 8 0 0 0-8-8Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></symbol>
+    <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="12" cy="12" r="2.2" fill="currentColor"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6h11v9H3zM14 9h4l3 3v3h-7zM7 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm10 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5l-8-3Zm-1 13-3.5-3.5 1.4-1.4L11 12.2l5.1-5.1 1.4 1.4L11 15Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19l12-12-1.4-1.4z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 11h5v-2h-4V6h-2v7Z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z"/></symbol>
   </svg>
 
-  <!-- Floating WhatsApp button -->
-  <a class="wa-float" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista." target="_blank" rel="noopener" aria-label="WhatsApp FD Avícola">
-    <svg class="icon" width="20" height="20" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
+  <!-- Floating WhatsApp -->
+  <a class="wa-float" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista." target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
+    <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
     <span class="wa-float-text">WhatsApp</span>
   </a>
 
   <!-- Header -->
   <header class="site-header" role="banner">
     <div class="container header-inner">
-      <a class="brand" href="#inicio" aria-label="FD Avícola, inicio">
-        <img src="assets/logo.png" alt="FD Avícola" class="brand-logo" />
+      <a class="brand" href="#inicio" aria-label="FD Avícola — Inicio">
+        <img class="brand-logo" src="assets/logo.png" alt="FD Avícola" width="120" height="44" />
       </a>
 
       <nav class="nav" aria-label="Navegación principal">
-        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
-          <span class="sr-only">Abrir menú</span>
-          ☰
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Abrir menú">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg>
         </button>
         <ul id="nav-menu" class="nav-menu">
           <li><a href="#inicio">Inicio</a></li>
           <li><a href="#productos">Productos</a></li>
-          <li><a href="#servicios">Servicios</a></li>
-          <li><a href="#contacto">Contacto</a></li>
+          <li><a href="#cobertura">Cobertura</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#faq">Preguntas</a></li>
         </ul>
       </nav>
 
-      <a class="btn btn-primary btn-whatsapp" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista." target="_blank" rel="noopener">
-        <svg class="icon" width="18" height="18" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-        Cotizá por WhatsApp
-      </a>
+      <div class="header-cta">
+        <a class="header-phone" href="tel:+541139467076" aria-label="Llamar al +54 11 3946-7076">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>
+          <span>+54 11 3946-7076</span>
+        </a>
+        <a class="btn btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista." target="_blank" rel="noopener">
+          <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
+          Cotizar
+        </a>
+      </div>
     </div>
   </header>
 
   <main id="contenido">
-    <!-- Hero -->
+    <!-- HERO -->
     <section id="inicio" class="hero">
-      <div class="container">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="container hero-inner">
         <div class="hero-copy">
-          <p class="hero-kicker">Mayorista · CABA y GBA</p>
-          <h1>Distribución mayorista de pollo refrigerado <span class="accent">El Fortín</span> y huevos</h1>
-          <p class="lead">Cadena de frío controlada · Reparto programado · Coordinación ágil por WhatsApp</p>
-
-          <ul class="checklist" aria-label="Beneficios principales">
-            <li>Atendemos carnicerías, granjas, gastronómicos, geriátricos y comercios</li>
-            <li>Producto refrigerado y manipulación cuidada</li>
-            <li>Pasás zona + cantidad y te respondemos con precio y disponibilidad</li>
-          </ul>
-
+          <span class="eyebrow"><span class="dot" aria-hidden="true"></span> Distribuidor Mayorista · CABA + GBA</span>
+          <h1>Pollo refrigerado <span class="accent">El Fortín</span> y huevos para tu negocio</h1>
+          <p class="lead">
+            Cadena de frío garantizada, reparto programado y atención personalizada por
+            WhatsApp. Cotizamos en minutos según tu zona y volumen.
+          </p>
           <div class="hero-cta">
-            <a class="btn btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista.%20Mi%20zona%20es%20____%20y%20necesito%20____." target="_blank" rel="noopener">
-              <svg class="icon" width="18" height="18" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-              Cotizar ahora
+            <a class="btn btn-lg btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista.%20Mi%20zona%20es%20____%20y%20necesito%20____." target="_blank" rel="noopener">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
+              Cotizar por WhatsApp
             </a>
-            <a class="btn btn-secondary" href="#productos">Ver productos</a>
+            <a class="btn btn-lg btn-ghost-light" href="#productos">Ver productos</a>
           </div>
-
-          <p class="microcopy">Tip: si nos decís <strong>frecuencia</strong> (semanal/quincenal) te armamos el reparto más conveniente.</p>
+          <div class="hero-meta">
+            <span class="hero-meta-item">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>
+              Atención humana, sin bots
+            </span>
+            <span class="hero-meta-item">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>
+              Reparto programado
+            </span>
+            <span class="hero-meta-item">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>
+              Cadena de frío
+            </span>
+          </div>
         </div>
+
+        <aside class="hero-stats" aria-label="Datos clave">
+          <div class="hero-stat">
+            <span class="hero-stat-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-snow"/></svg></span>
+            <div>
+              <p class="hero-stat-title">Cadena de frío</p>
+              <p class="hero-stat-text">Producto refrigerado de punta a punta del recorrido.</p>
+            </div>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-truck"/></svg></span>
+            <div>
+              <p class="hero-stat-title">Reparto programado</p>
+              <p class="hero-stat-text">Coordinamos zona y ventana horaria para no frenar tu operación.</p>
+            </div>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg></span>
+            <div>
+              <p class="hero-stat-title">Calidad El Fortín</p>
+              <p class="hero-stat-text">Distribuimos pollo refrigerado de marca reconocida.</p>
+            </div>
+          </div>
+        </aside>
       </div>
     </section>
 
-    <!-- Productos -->
+    <!-- TRUST BAR -->
+    <section class="trust" aria-label="Tipos de cliente que atendemos">
+      <div class="container trust-inner">
+        <span class="trust-label">Atendemos</span>
+        <span class="trust-tag"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Carnicerías</span>
+        <span class="trust-tag"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Granjas</span>
+        <span class="trust-tag"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Gastronómicos</span>
+        <span class="trust-tag"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Geriátricos</span>
+        <span class="trust-tag"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Comercios y comedores</span>
+      </div>
+    </section>
+
+    <!-- PRODUCTOS -->
     <section id="productos" class="section">
       <div class="container">
-        <header class="section-head center">
+        <header class="section-head">
+          <span class="section-eyebrow">Productos</span>
           <h2>Pollo mayorista y huevos en Buenos Aires</h2>
-          <p class="muted">Pollo refrigerado <strong>El Fortín</strong> y cajones de huevos para abastecer tu negocio con continuidad.</p>
+          <p>Pollo refrigerado <strong>El Fortín</strong> y cajones de huevos para abastecer tu negocio con continuidad.</p>
         </header>
 
         <div class="cards two-col">
-          <!-- Pollo primero -->
-          <article class="card">
-            <img class="card-img" src="assets/producto-2.jpg" alt="Pollo entero El Fortín refrigerado en cajón" />
-            <div class="card-body">
-              <h3>Pollo entero El Fortín <span class="tag">Refrigerado</span></h3>
-              <p class="muted">Calidad consistente, vendido por cajón para tu comercio o producción. Cadena de frío en todo el recorrido.</p>
-
-              <ul class="checklist compact">
+          <article class="product">
+            <div class="product-media">
+              <img src="assets/producto-2.jpg" alt="Pollo entero El Fortín refrigerado en cajón" loading="lazy" width="800" height="500" />
+              <span class="product-tag"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-snow"/></svg> Refrigerado</span>
+            </div>
+            <div class="product-body">
+              <h3>Pollo entero El Fortín</h3>
+              <p class="product-desc">Calidad consistente, vendido por cajón para tu comercio o producción. Cadena de frío en todo el recorrido.</p>
+              <ul class="specs">
                 <li>Pollo entero · Venta por cajón y pallet</li>
                 <li>Cadena de frío controlada</li>
-                <li>Coordinación por WhatsApp</li>
+                <li>Coordinación rápida por WhatsApp</li>
               </ul>
-
-              <a class="btn btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista%20de%20pollo%20El%20Fort%C3%ADn.%20Mi%20zona%20es%20____%20y%20necesito%20____%20cajones%20(aprox.)." target="_blank" rel="noopener">
-                <svg class="icon" width="18" height="18" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-                Consultar precios
-              </a>
+              <div class="product-foot">
+                <a class="btn btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista%20de%20pollo%20El%20Fort%C3%ADn.%20Mi%20zona%20es%20____%20y%20necesito%20____%20cajones%20(aprox.)." target="_blank" rel="noopener">
+                  <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
+                  Consultar precio
+                </a>
+                <a class="btn btn-outline" href="#contacto">Más info</a>
+              </div>
             </div>
           </article>
 
-          <!-- Huevos -->
-          <article class="card">
-            <img class="card-img" src="assets/producto-1.jpg" alt="Cajones de huevos frescos" />
-            <div class="card-body">
+          <article class="product">
+            <div class="product-media">
+              <img src="assets/producto-1.jpg" alt="Cajones de huevos frescos N1 y N2" loading="lazy" width="800" height="500" />
+              <span class="product-tag"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Frescos</span>
+            </div>
+            <div class="product-body">
               <h3>Huevos frescos</h3>
-              <p class="muted">Cajones para reposición constante. Ideal para granjas, almacenes, gastronómicos y comedores.</p>
-
-              <ul class="checklist compact">
+              <p class="product-desc">Cajones para reposición constante. Ideal para granjas, almacenes, gastronómicos y comedores.</p>
+              <ul class="specs">
                 <li>Tamaños N1 y N2 (según disponibilidad)</li>
                 <li>Entrega coordinada con tu reparto</li>
                 <li>Venta mayorista por cajón</li>
               </ul>
-
-              <a class="btn btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20consultar%20precios%20mayoristas%20de%20huevos%20(N1%20y%20N2).%20Mi%20zona%20es%20____%20y%20necesito%20____%20cajones." target="_blank" rel="noopener">
-                <svg class="icon" width="18" height="18" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-                Consultar precios
-              </a>
+              <div class="product-foot">
+                <a class="btn btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20consultar%20precios%20mayoristas%20de%20huevos%20(N1%20y%20N2).%20Mi%20zona%20es%20____%20y%20necesito%20____%20cajones." target="_blank" rel="noopener">
+                  <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
+                  Consultar precio
+                </a>
+                <a class="btn btn-outline" href="#contacto">Más info</a>
+              </div>
             </div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- Servicios -->
-    <section id="servicios" class="section section-soft">
+    <!-- POR QUÉ ELEGIRNOS -->
+    <section id="nosotros" class="section section-cream">
       <div class="container">
-        <header class="section-head center">
-          <h2>Distribución mayorista en CABA y GBA</h2>
-          <p class="muted">Logística pensada para mayoristas: previsibilidad, coordinación y continuidad de stock.</p>
+        <header class="section-head">
+          <span class="section-eyebrow">Por qué elegirnos</span>
+          <h2>Logística pensada para mayoristas</h2>
+          <p>Previsibilidad, coordinación y continuidad de stock para que tu negocio no se frene.</p>
         </header>
 
-        <div class="cards three-col">
-          <article class="card mini">
-            <img class="card-img" src="assets/servicio-1.jpg" alt="Camión de reparto programado" />
-            <div class="card-body">
-              <h3>Repartos programados</h3>
-              <p class="muted">Coordinamos ruta y ventana horaria para que tu operación no se frene.</p>
-            </div>
-          </article>
+        <div class="features">
+          <div class="feature">
+            <span class="feature-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-truck"/></svg></span>
+            <h3>Repartos programados</h3>
+            <p>Coordinamos ruta y ventana horaria semanal o quincenal. Sin sorpresas en tu reposición.</p>
+          </div>
+          <div class="feature">
+            <span class="feature-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-snow"/></svg></span>
+            <h3>Cadena de frío</h3>
+            <p>Producto refrigerado, higiene y manipulación cuidada. Calidad consistente en cada entrega.</p>
+          </div>
+          <div class="feature">
+            <span class="feature-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg></span>
+            <h3>Atención por WhatsApp</h3>
+            <p>Cotizás y coordinás en un mensaje: zona + cantidad y avanzamos. Respuesta humana, sin bots.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-          <article class="card mini">
-            <img class="card-img" src="assets/servicio-2.jpg" alt="Cadena de frío garantizada" />
-            <div class="card-body">
-              <h3>Cadena de frío</h3>
-              <p class="muted">Producto refrigerado, higiene y manipulación cuidada. Calidad consistente en cada entrega.</p>
-            </div>
-          </article>
+    <!-- CÓMO COMPRAR -->
+    <section class="section section-dark">
+      <div class="container">
+        <header class="section-head">
+          <span class="section-eyebrow">Cómo comprar</span>
+          <h2>3 pasos y tu pedido está en marcha</h2>
+          <p>Sin formularios, sin esperas: coordinamos directamente por WhatsApp.</p>
+        </header>
 
-          <article class="card mini">
-            <img class="card-img" src="assets/servicio-3.jpg" alt="Atención por WhatsApp" />
-            <div class="card-body">
-              <h3>Atención por WhatsApp</h3>
-              <p class="muted">Cotizás y coordinás en un mensaje: zona + cantidad y avanzamos.</p>
-            </div>
-          </article>
+        <div class="steps">
+          <div class="step">
+            <span class="step-num" aria-hidden="true">1</span>
+            <h3>Escribinos por WhatsApp</h3>
+            <p>Decinos tu zona, cantidad estimada (cajones) y frecuencia: semanal o quincenal.</p>
+          </div>
+          <div class="step">
+            <span class="step-num" aria-hidden="true">2</span>
+            <h3>Te enviamos cotización</h3>
+            <p>Recibís precios mayoristas, disponibilidad y condiciones. Confirmamos día y hora.</p>
+          </div>
+          <div class="step">
+            <span class="step-num" aria-hidden="true">3</span>
+            <h3>Entregamos en tu local</h3>
+            <p>Llegamos en la ventana coordinada, con cadena de frío y atención cuidada.</p>
+          </div>
         </div>
 
-        <div class="center" style="margin-top: 18px;">
-          <a class="btn btn-secondary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20coordinar%20reparto.%20Mi%20zona%20es%20____%20y%20necesito%20____%20cajones." target="_blank" rel="noopener">
-            <svg class="icon" width="18" height="18" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-            Coordinar por WhatsApp
+        <div class="center" style="margin-top: 40px;">
+          <a class="btn btn-lg btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20coordinar%20mi%20primer%20pedido.%20Mi%20zona%20es%20____%20y%20necesito%20____." target="_blank" rel="noopener">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
+            Empezar ahora
           </a>
         </div>
       </div>
     </section>
 
-    <!-- Contacto -->
-    <section id="contacto" class="section contact">
-      <div class="container contact-grid">
-        <div>
-          <h2>Contacto</h2>
-          <p class="muted">Distribución mayorista · Buenos Aires (CABA y GBA, según ruta)</p>
+    <!-- COBERTURA -->
+    <section id="cobertura" class="section section-soft">
+      <div class="container">
+        <header class="section-head">
+          <span class="section-eyebrow">Cobertura</span>
+          <h2>Verificá si llegamos a tu zona</h2>
+          <p>Tenemos dos modalidades de entrega según la zona. Consultá el mapa o escribinos por WhatsApp con tu dirección.</p>
+        </header>
 
-          <div class="contact-box">
-            <div>
-              <div class="label">📞 Teléfono</div>
-              <a href="tel:+541139467076">+54 11 3946-7076</a>
+        <div class="coverage-modes">
+          <article class="mode mode-primary">
+            <div class="mode-head">
+              <span class="mode-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-truck"/></svg></span>
+              <div>
+                <span class="mode-tag">Reparto programado</span>
+                <h3>Sin compra mínima</h3>
+              </div>
             </div>
-            <div>
-              <div class="label">✉️ Email</div>
-              <a href="mailto:contacto@fdavicola.com">contacto@fdavicola.com</a>
+            <p>Hacemos reparto programado en <strong>GBA Norte</strong> con frecuencia semanal o quincenal. No hay pedido mínimo.</p>
+            <ul class="zones" aria-label="Zonas con reparto programado">
+              <li class="zone-chip is-active">Vicente López</li>
+              <li class="zone-chip is-active">San Isidro</li>
+              <li class="zone-chip is-active">San Fernando</li>
+              <li class="zone-chip is-active">Tigre</li>
+              <li class="zone-chip is-active">San Martín</li>
+            </ul>
+          </article>
+
+          <article class="mode mode-secondary">
+            <div class="mode-head">
+              <span class="mode-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg></span>
+              <div>
+                <span class="mode-tag">Entrega a demanda</span>
+                <h3>Mínimo 200 cajones de pollo</h3>
+              </div>
             </div>
-            <div>
-              <div class="label">📍 Zonas</div>
-              <div>CABA y GBA (según recorrido)</div>
-            </div>
-          </div>
+            <p>Llevamos pedidos a otras zonas con un mínimo de <strong>200 cajones de pollo</strong>. Coordinamos día y horario por WhatsApp.</p>
+            <ul class="zones" aria-label="Zonas con entrega a demanda">
+              <li class="zone-chip">CABA</li>
+              <li class="zone-chip">GBA Oeste</li>
+              <li class="zone-chip">GBA Sur</li>
+              <li class="zone-chip">La Matanza</li>
+              <li class="zone-chip">Quilmes</li>
+              <li class="zone-chip">Otras zonas</li>
+            </ul>
+          </article>
         </div>
 
-        <aside class="contact-card" aria-label="Solicitá precios por WhatsApp">
-          <h3>Pedí la lista mayorista por WhatsApp</h3>
-          <p class="muted">Te respondemos con precios, disponibilidad y condiciones. Para cotizar rápido: zona + cantidad + frecuencia.</p>
+        <div class="map-block">
+          <div class="map-block-head">
+            <h3>Mapa interactivo</h3>
+            <div class="map-legend" aria-label="Referencias del mapa">
+              <span class="legend-item"><span class="dot dot-primary" aria-hidden="true"></span> Reparto programado · sin mínimo</span>
+              <span class="legend-item"><span class="dot dot-secondary" aria-hidden="true"></span> Entrega con mínimo de 200 cajones</span>
+            </div>
+          </div>
+          <div id="coverage-map" class="map" role="region" aria-label="Mapa de zonas de cobertura"></div>
+          <p class="map-foot">
+            ¿No estás seguro si llegamos a tu zona?
+            <a class="btn btn-dark" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20saber%20si%20llegan%20a%20mi%20zona:%20____" target="_blank" rel="noopener">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
+              Consultar mi zona
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
 
-          <div class="contact-card-actions">
-            <a class="btn btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20recibir%20la%20lista%20mayorista.%20Mi%20zona%20es%20____%20y%20necesito%20____." target="_blank" rel="noopener">
-              <svg class="icon" width="18" height="18" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-              Pedir lista
-            </a>
-            <a class="btn btn-secondary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20pollo%20y%20huevos.%20Zona:%20____%20Cantidades:%20____%20Frecuencia:%20____." target="_blank" rel="noopener">
-              <svg class="icon" width="18" height="18" aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-              Cotizar pedido
-            </a>
+    <!-- FAQ -->
+    <section id="faq" class="section">
+      <div class="container">
+        <header class="section-head">
+          <span class="section-eyebrow">Preguntas frecuentes</span>
+          <h2>Todo lo que necesitás saber</h2>
+        </header>
+
+        <div class="faq">
+          <details class="faq-item" open>
+            <summary class="faq-q">¿Hay un pedido mínimo?</summary>
+            <div class="faq-a">
+              <strong>Depende de tu zona:</strong>
+              <ul>
+                <li><strong>GBA Norte</strong> (Vicente López, San Isidro, San Fernando, Tigre, San Martín): tenemos reparto programado, <strong>sin compra mínima</strong>.</li>
+                <li><strong>Otras zonas</strong> (CABA, GBA Oeste, GBA Sur, La Matanza, Quilmes, etc.): entregamos a demanda con un mínimo de <strong>200 cajones de pollo</strong>.</li>
+              </ul>
+              Si no estás seguro de tu caso, escribinos por WhatsApp con tu dirección y te confirmamos.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">¿A qué zonas llegan?</summary>
+            <div class="faq-a">Tenemos reparto programado en GBA Norte (sin mínimo) y entrega a demanda en otras zonas (mínimo 200 cajones de pollo). Mirá el mapa interactivo en la sección Cobertura para verificar si tu zona está incluida.</div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">¿Con qué frecuencia entregan?</summary>
+            <div class="faq-a">En GBA Norte: reparto programado semanal o quincenal según tu volumen. En el resto de las zonas: entregas a demanda coordinadas por WhatsApp.</div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">¿Cómo se cotiza el pedido?</summary>
+            <div class="faq-a">Por WhatsApp. Pasanos tu zona, cantidad aproximada de cajones y frecuencia, y te respondemos con precio y disponibilidad.</div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">¿Cómo coordinan el día y horario?</summary>
+            <div class="faq-a">Una vez confirmado el pedido te avisamos día y ventana horaria de entrega. Si necesitás algún horario en particular, lo conversamos.</div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-q">¿Hay atención fuera del horario operativo?</summary>
+            <div class="faq-a">Respondemos lo antes posible dentro del horario operativo. Si nos escribís fuera de horario, te respondemos al día siguiente.</div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" class="section contact">
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-info">
+            <span class="section-eyebrow">Contacto</span>
+            <h2>Escribinos y coordinamos</h2>
+            <p>Distribución mayorista de pollo refrigerado El Fortín y huevos. CABA y GBA, según recorrido.</p>
+
+            <ul class="contact-list">
+              <li>
+                <span class="icon-wrap"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></span>
+                <div>
+                  <p class="label">Teléfono</p>
+                  <a href="tel:+541139467076">+54 11 3946-7076</a>
+                </div>
+              </li>
+              <li>
+                <span class="icon-wrap"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg></span>
+                <div>
+                  <p class="label">Email</p>
+                  <a href="mailto:contacto@fdavicola.com">contacto@fdavicola.com</a>
+                </div>
+              </li>
+              <li>
+                <span class="icon-wrap"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg></span>
+                <div>
+                  <p class="label">Cobertura</p>
+                  <a href="#cobertura">CABA y GBA (según recorrido)</a>
+                </div>
+              </li>
+            </ul>
           </div>
 
-          <p class="microcopy">Atención humana (sin bots). Respuesta lo antes posible dentro del horario operativo.</p>
-        </aside>
+          <aside class="contact-card" aria-label="Solicitar cotización por WhatsApp">
+            <h3>Pedí la lista mayorista por WhatsApp</h3>
+            <p>Te respondemos con precios, disponibilidad y condiciones. Para cotizar rápido: <strong>zona + cantidad + frecuencia</strong>.</p>
+
+            <div class="contact-card-actions">
+              <a class="btn btn-lg btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20recibir%20la%20lista%20mayorista.%20Mi%20zona%20es%20____%20y%20necesito%20____." target="_blank" rel="noopener">
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
+                Pedir lista
+              </a>
+              <a class="btn btn-lg btn-ghost-light" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20pollo%20y%20huevos.%20Zona:%20____%20Cantidades:%20____%20Frecuencia:%20____." target="_blank" rel="noopener">
+                <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
+                Cotizar pedido
+              </a>
+            </div>
+
+            <p class="contact-microcopy">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg>
+              Atención humana · Respuesta dentro del horario operativo
+            </p>
+          </aside>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <p>© <span id="year"></span> FD Avícola. Todos los derechos reservados.</p>
+      <p>© <span id="year"></span> FD Avícola — Distribución mayorista de pollo y huevos en Buenos Aires.</p>
+      <div class="footer-meta">
+        <a href="tel:+541139467076">+54 11 3946-7076</a>
+        <a href="mailto:contacto@fdavicola.com">contacto@fdavicola.com</a>
+        <a href="https://www.facebook.com/profile.php?id=61587528465337" target="_blank" rel="noopener">Facebook</a>
+      </div>
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="assets/vendor/leaflet/leaflet.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
