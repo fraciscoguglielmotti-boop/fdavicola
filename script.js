@@ -130,6 +130,18 @@
     map.fitBounds(group.getBounds().pad(0.05));
   }
 
+  // Scroll reveal
+  const revealEls = $$('[data-reveal]');
+  if (revealEls.length && 'IntersectionObserver' in window) {
+    const ro = new IntersectionObserver(
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); ro.unobserve(e.target); }
+      }),
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+    revealEls.forEach(el => ro.observe(el));
+  }
+
   // Scroll spy: highlight active nav link
   const navLinks = $$(".nav-menu a[href^='#']");
   const sections = navLinks

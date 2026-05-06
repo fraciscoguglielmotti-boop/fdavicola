@@ -205,20 +205,42 @@
       </div>
     </section>
 
+    <!-- STAT STRIP -->
+    <div class="stat-strip" role="presentation" aria-hidden="true">
+      <div class="container stat-strip-inner">
+        <div class="stat-chip">
+          <span class="stat-chip-num">+5</span>
+          <span class="stat-chip-label">años en el rubro</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-chip-num">Sin mínimo</span>
+          <span class="stat-chip-label">en GBA Norte</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-chip-num">El Fortín</span>
+          <span class="stat-chip-label">marca líder de pollo</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-chip-num">CABA · GBA</span>
+          <span class="stat-chip-label">cobertura en Buenos Aires</span>
+        </div>
+      </div>
+    </div>
+
     <!-- PRODUCTOS -->
     <section id="productos" class="section">
       <div class="container">
-        <header class="section-head">
+        <header class="section-head" data-reveal>
           <span class="section-eyebrow">Productos</span>
           <h2>Pollo mayorista y huevos en Buenos Aires</h2>
           <p>Pollo refrigerado <strong>El Fortín</strong> y cajones de huevos para abastecer tu negocio con continuidad.</p>
         </header>
 
         <div class="cards two-col">
-          <article class="product">
+          <article class="product product-chicken">
             <div class="product-media">
               <img src="assets/producto-2.jpg" alt="Pollo entero El Fortín refrigerado en cajón" loading="lazy" width="800" height="500" />
-              <span class="product-tag"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-snow"/></svg> Refrigerado</span>
+              <span class="product-tag cold-tag"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-snow"/></svg> Refrigerado</span>
             </div>
             <div class="product-body">
               <h3>Pollo entero El Fortín</h3>
@@ -267,53 +289,58 @@
     <!-- POR QUÉ ELEGIRNOS -->
     <section id="nosotros" class="section section-cream">
       <div class="container">
-        <header class="section-head">
+        <header class="section-head" data-reveal>
           <span class="section-eyebrow">Por qué elegirnos</span>
           <h2>Logística pensada para mayoristas</h2>
           <p>Previsibilidad, coordinación y continuidad de stock para que tu negocio no se frene.</p>
         </header>
 
         <div class="features">
-          <div class="feature">
+          <div class="feature" data-reveal data-delay="100">
             <span class="feature-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-truck"/></svg></span>
             <h3>Repartos programados</h3>
             <p>Coordinamos ruta y ventana horaria semanal o quincenal. Sin sorpresas en tu reposición.</p>
           </div>
-          <div class="feature">
+          <div class="feature" data-reveal data-delay="200">
             <span class="feature-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-snow"/></svg></span>
             <h3>Cadena de frío</h3>
             <p>Producto refrigerado, higiene y manipulación cuidada. Calidad consistente en cada entrega.</p>
           </div>
-          <div class="feature">
+          <div class="feature" data-reveal data-delay="300">
             <span class="feature-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg></span>
             <h3>Atención por WhatsApp</h3>
             <p>Cotizás y coordinás en un mensaje: zona + cantidad y avanzamos. Respuesta humana, sin bots.</p>
           </div>
         </div>
+
+        <blockquote class="testimonial" data-reveal>
+          <p>"Llevan más de 2 años abasteciendo mi carnicería. El pollo El Fortín siempre llega frío y en horario."</p>
+          <cite>Cliente · Vicente López</cite>
+        </blockquote>
       </div>
     </section>
 
     <!-- CÓMO COMPRAR -->
     <section class="section section-dark">
       <div class="container">
-        <header class="section-head">
+        <header class="section-head" data-reveal>
           <span class="section-eyebrow">Cómo comprar</span>
           <h2>3 pasos y tu pedido está en marcha</h2>
           <p>Sin formularios, sin esperas: coordinamos directamente por WhatsApp.</p>
         </header>
 
         <div class="steps">
-          <div class="step">
+          <div class="step" data-reveal data-delay="100">
             <span class="step-num" aria-hidden="true">1</span>
             <h3>Escribinos por WhatsApp</h3>
             <p>Decinos tu zona, cantidad estimada (cajones) y frecuencia: semanal o quincenal.</p>
           </div>
-          <div class="step">
+          <div class="step" data-reveal data-delay="200">
             <span class="step-num" aria-hidden="true">2</span>
             <h3>Te enviamos cotización</h3>
             <p>Recibís precios mayoristas, disponibilidad y condiciones. Confirmamos día y hora.</p>
           </div>
-          <div class="step">
+          <div class="step" data-reveal data-delay="300">
             <span class="step-num" aria-hidden="true">3</span>
             <h3>Entregamos en tu local</h3>
             <p>Llegamos en la ventana coordinada, con cadena de frío y atención cuidada.</p>
@@ -332,7 +359,7 @@
     <!-- COBERTURA -->
     <section id="cobertura" class="section section-soft">
       <div class="container">
-        <header class="section-head">
+        <header class="section-head" data-reveal>
           <span class="section-eyebrow">Cobertura</span>
           <h2>Verificá si llegamos a tu zona</h2>
           <p>Tenemos dos modalidades de entrega según la zona. Consultá el mapa o escribinos por WhatsApp con tu dirección.</p>
@@ -400,7 +427,7 @@
     <!-- FAQ -->
     <section id="faq" class="section">
       <div class="container">
-        <header class="section-head">
+        <header class="section-head" data-reveal>
           <span class="section-eyebrow">Preguntas frecuentes</span>
           <h2>Todo lo que necesitás saber</h2>
         </header>
