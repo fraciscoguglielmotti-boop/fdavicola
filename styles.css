@@ -237,10 +237,9 @@ p:last-child{ margin-bottom: 0; }
 .hero-bg{
   position: absolute; inset: 0; z-index: -2;
   background-image: url("assets/hero.jpg");
-  background-size: cover;
+  background-size: 104%;
   background-position: center 30%;
   filter: saturate(125%) contrast(1.06) brightness(.96);
-  transform: scale(1.02);
 }
 .hero::before{
   content: ""; position: absolute; inset: 0; z-index: -1;
@@ -1096,9 +1095,11 @@ section[id]{ scroll-margin-top: 90px; }
 
 /* Hero stats panel upgrade */
 .hero-stats{
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.16);
-  box-shadow: 0 8px 32px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.10);
+  background: rgba(4, 32, 26, .60);
+  border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 32px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08);
 }
 
 /* Nav link active indicator */
