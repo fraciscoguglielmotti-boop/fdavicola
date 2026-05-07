@@ -123,7 +123,7 @@
               <h3>Pechuga de pollo</h3>
               <p class="product-desc">Suprema fresca, sin hueso. Calidad consistente.</p>
               <div class="price-row">
-                <span class="price">$11.999</span>
+                <span class="price" data-precio="pechuga_kg"></span>
                 <span class="price-unit">/ kg</span>
               </div>
               <div class="product-foot">
@@ -144,7 +144,7 @@
               <h3>Pata muslo</h3>
               <p class="product-desc">Pata muslo fresco refrigerado. Listo para cocinar.</p>
               <div class="price-row">
-                <span class="price">$3.999</span>
+                <span class="price" data-precio="pata_muslo_kg"></span>
                 <span class="price-unit">/ kg</span>
               </div>
               <div class="product-foot">
@@ -165,7 +165,7 @@
               <h3>Maple de huevos</h3>
               <p class="product-desc">30 huevos por maple. N1 o N2 según disponibilidad.</p>
               <div class="price-row">
-                <span class="price">$5.500</span>
+                <span class="price" data-precio="maple_huevos"></span>
                 <span class="price-unit">/ maple</span>
               </div>
               <div class="product-foot">
@@ -204,7 +204,7 @@
                 <li>Ahorrás vs comprar por separado</li>
               </ul>
               <div class="price-row">
-                <span class="price">$130.990</span>
+                <span class="price" data-precio="combo_pechuga"></span>
               </div>
               <div class="product-foot">
                 <a class="btn btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20el%20Combo%20Pechuga%20(10%20kg%20pechuga%20%2B%202%20maples)." target="_blank" rel="noopener">
@@ -229,7 +229,7 @@
                 <li>Combo económico</li>
               </ul>
               <div class="price-row">
-                <span class="price">$25.495</span>
+                <span class="price" data-precio="combo_pata_muslo"></span>
               </div>
               <div class="product-foot">
                 <a class="btn btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20el%20Combo%20Pata%20Muslo%20(5%20kg%20pata%20muslo%20%2B%201%20maple)." target="_blank" rel="noopener">
@@ -300,5 +300,16 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    fetch('data/precios.json')
+      .then(r => r.json())
+      .then(p => {
+        const fmt = n => '$' + Number(n).toLocaleString('es-AR');
+        document.querySelectorAll('[data-precio]').forEach(el => {
+          const v = p[el.dataset.precio];
+          if (v !== undefined) el.textContent = fmt(v);
+        });
+      });
+  </script>
 </body>
 </html>
