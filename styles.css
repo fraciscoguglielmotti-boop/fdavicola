@@ -933,6 +933,63 @@ section[id]{ scroll-margin-top: 90px; }
   font-weight: 800;
 }
 
+/* Nav — Tienda link */
+.nav-minorista{
+  background: var(--gold-500) !important;
+  color: var(--green-900) !important;
+  font-weight: 700 !important;
+  border-radius: var(--r-pill) !important;
+  padding: 8px 14px !important;
+}
+.nav-minorista:hover{
+  background: var(--gold-600) !important;
+  color: var(--green-900) !important;
+  text-decoration: none !important;
+}
+
+/* Promo banner */
+.promo-banner{
+  background: linear-gradient(90deg, var(--green-700) 0%, var(--green-600) 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 48px 10px 16px;
+  font-size: 14px;
+  position: relative;
+  flex-wrap: wrap;
+  text-align: center;
+}
+.promo-banner-text{ color: rgba(255,255,255,.92); }
+.promo-banner-cta{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--gold-500);
+  color: var(--green-900);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+  transition: background .2s;
+}
+.promo-banner-cta:hover{ background: var(--gold-600); text-decoration: none; }
+.promo-banner-close{
+  position: absolute;
+  right: 14px; top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255,255,255,.7);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px 6px;
+  line-height: 1;
+}
+.promo-banner-close:hover{ color: #fff; }
+
 /* =========================================================
    V2 — Upgrade visual
    ========================================================= */
