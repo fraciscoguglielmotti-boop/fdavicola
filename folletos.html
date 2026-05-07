@@ -7,470 +7,415 @@
   <meta name="robots" content="noindex,nofollow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@500;700;900&family=Archivo+Black&display=swap" />
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Inter',sans-serif;background:#111827;color:#333;padding:40px 20px}
     img{display:block;max-width:100%;height:auto}
+    body{font-family:'Inter',sans-serif;background:#0d1119;padding:48px 20px}
 
-    /* ── SCREEN PREVIEW ─────────────────────────────── */
-    .pg-header{text-align:center;margin-bottom:56px}
-    .pg-header h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;color:#fff;margin-bottom:8px}
-    .pg-header p{color:rgba(255,255,255,.55);font-size:14px;max-width:520px;margin:0 auto}
+    /* ── PREVIEW SHELL ─────────────────────────────── */
+    .pg-h{text-align:center;margin-bottom:48px}
+    .pg-h h1{font-family:'Anton',sans-serif;font-size:36px;font-weight:400;color:#fff;letter-spacing:.02em;margin-bottom:8px}
+    .pg-h p{color:rgba(255,255,255,.5);font-size:14px;max-width:560px;margin:0 auto}
 
-    .fw{max-width:960px;margin:0 auto 72px}
-    .fw-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-    .fw-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:#f0b429;letter-spacing:.06em;text-transform:uppercase}
-    .fw-size{font-size:12px;color:rgba(255,255,255,.35)}
-    .fw-preview{display:flex;justify-content:center;margin-bottom:16px}
-    .btn-imp{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:#f0b429;color:#052b22;font-weight:700;font-size:13px;border:none;border-radius:999px;cursor:pointer;font-family:'Inter',sans-serif;transition:background .2s}
-    .btn-imp:hover{background:#d99815}
+    .fw{max-width:980px;margin:0 auto 80px}
+    .fw-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding:0 4px}
+    .fw-title{font-family:'Anton',sans-serif;font-size:18px;font-weight:400;color:#f0b429;letter-spacing:.06em;text-transform:uppercase}
+    .fw-size{font-size:12px;color:rgba(255,255,255,.35);font-weight:600}
+    .fw-prev{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:18px}
+    .btn-imp{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:#f0b429;color:#0a1814;font-weight:800;font-size:13px;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.04em;text-transform:uppercase;transition:all .15s}
+    .btn-imp:hover{background:#fff;transform:translateY(-2px)}
+    .btn-row{text-align:center;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 
-    /* ── FOLLETO BASE ───────────────────────────────── */
-    .f{overflow:hidden;background:#fff;position:relative}
-
-    /* ════════════════════════════════════════════════
-       F1 — A5 vertical  148 × 210 mm   BUZONEO
-    ════════════════════════════════════════════════ */
-    .f1{width:148mm;min-height:210mm;display:flex;flex-direction:column}
-
-    .f1-hdr{background:#052b22;padding:18px 22px;display:flex;align-items:center;justify-content:space-between}
-    .f1-brand{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:900;color:#fff;letter-spacing:-.02em}
+    /* ─────────────────────────────────────────────────
+       F1 — A5 vertical · BUZONEO  148 × 210 mm
+    ───────────────────────────────────────────────── */
+    .f1{
+      width:148mm;height:210mm;
+      background:#0a1f17;color:#fff;
+      position:relative;overflow:hidden;
+      box-shadow:0 30px 60px rgba(0,0,0,.4);
+      display:flex;flex-direction:column;
+    }
+    /* Cinta diagonal "OFERTA" */
+    .f1-ribbon{
+      position:absolute;top:24px;left:-58px;width:230px;
+      background:#e63946;color:#fff;
+      font-family:'Anton',sans-serif;font-size:18px;letter-spacing:.08em;
+      padding:8px 0;text-align:center;
+      transform:rotate(-32deg);
+      box-shadow:0 6px 16px rgba(230,57,70,.45);
+      z-index:10;
+    }
+    /* Brand top */
+    .f1-brand{
+      position:absolute;top:18px;right:22px;
+      font-family:'Anton',sans-serif;font-size:24px;letter-spacing:.04em;
+      color:#fff;z-index:10;
+    }
     .f1-brand em{color:#f0b429;font-style:normal}
-    .f1-tag{background:#f0b429;color:#052b22;font-size:9px;font-weight:800;padding:4px 10px;border-radius:999px;letter-spacing:.08em;text-transform:uppercase}
+    /* Hero photo */
+    .f1-photo-wrap{
+      height:75mm;position:relative;overflow:hidden;
+    }
+    .f1-photo-wrap img{
+      width:100%;height:100%;object-fit:cover;object-position:center 35%;
+      filter:saturate(1.15) contrast(1.05);
+    }
+    .f1-photo-wrap::after{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(180deg,rgba(10,31,23,.30) 0%,rgba(10,31,23,.95) 100%);
+    }
+    /* Big headline */
+    .f1-headline{
+      position:absolute;left:0;right:0;top:55mm;
+      text-align:center;padding:0 18px;z-index:5;
+    }
+    .f1-h1-pre{
+      font-family:'Anton',sans-serif;font-size:18px;letter-spacing:.18em;
+      color:#f0b429;margin-bottom:4px;text-transform:uppercase;
+    }
+    .f1-h1{
+      font-family:'Anton',sans-serif;font-size:54px;line-height:.92;
+      color:#fff;letter-spacing:.02em;text-transform:uppercase;
+      text-shadow:0 4px 18px rgba(0,0,0,.5);
+    }
+    .f1-h1 em{color:#f0b429;font-style:normal}
+    /* Price grid */
+    .f1-prices{
+      flex:1;background:#0a1f17;padding:24px 22px 18px;
+      display:flex;flex-direction:column;gap:10px;
+    }
+    .f1-pi{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px 16px;border-radius:8px;
+      background:#fff;color:#0a1f17;
+      box-shadow:inset 0 0 0 3px #0a1f17;
+    }
+    .f1-pi.hero{background:#f0b429;box-shadow:none;color:#0a1f17}
+    .f1-pi-name{
+      font-family:'Anton',sans-serif;font-size:24px;letter-spacing:.04em;
+      text-transform:uppercase;
+    }
+    .f1-pi-price{
+      font-family:'Anton',sans-serif;font-size:32px;line-height:1;
+      letter-spacing:-.01em;
+    }
+    .f1-pi-unit{font-size:13px;font-weight:700;margin-left:4px;opacity:.7}
+    /* Bottom WA stripe */
+    .f1-cta{
+      background:#25D366;padding:14px 22px;
+      display:flex;align-items:center;justify-content:space-between;gap:14px;
+    }
+    .f1-cta-l{
+      font-family:'Inter',sans-serif;font-size:11px;font-weight:900;
+      letter-spacing:.14em;text-transform:uppercase;
+      color:rgba(8,30,15,.78);margin-bottom:2px;
+    }
+    .f1-cta-p{
+      font-family:'Anton',sans-serif;font-size:30px;letter-spacing:.02em;
+      color:#082c14;line-height:1;
+    }
+    .f1-cta-w{
+      font-size:10px;font-weight:700;color:rgba(8,30,15,.6);margin-top:3px;
+    }
+    .f1-qr{background:#fff;padding:5px;border-radius:6px}
+    .f1-qr img{width:62px;height:62px}
 
-    .f1-hero{background:linear-gradient(140deg,#073a2c 0%,#0f5a45 100%);padding:28px 22px;color:#fff;position:relative;overflow:hidden}
-    .f1-hero-emoji{position:absolute;font-size:90px;right:-8px;top:-8px;opacity:.13;line-height:1}
-    .f1-eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#f0b429;margin-bottom:8px}
-    .f1-h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:900;line-height:1.05;margin-bottom:6px}
-    .f1-lead{font-size:12px;color:rgba(255,255,255,.75)}
+    /* ─────────────────────────────────────────────────
+       F2 — A6 horizontal · REPARTO EN MANO  148 × 105 mm
+    ───────────────────────────────────────────────── */
+    .f2{
+      width:148mm;height:105mm;
+      background:#0a1f17;color:#fff;position:relative;
+      overflow:hidden;
+      box-shadow:0 30px 60px rgba(0,0,0,.4);
+      display:grid;grid-template-columns:55mm 1fr;
+    }
+    /* Left photo */
+    .f2-l{position:relative;overflow:hidden}
+    .f2-l img{width:100%;height:100%;object-fit:cover;object-position:center 40%;filter:saturate(1.15) contrast(1.05)}
+    .f2-l::after{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(90deg,rgba(10,31,23,.05) 0%,rgba(10,31,23,.55) 90%,#0a1f17 100%);
+    }
+    /* Diagonal red badge */
+    .f2-badge{
+      position:absolute;top:8px;left:-38px;width:160px;
+      background:#e63946;color:#fff;
+      font-family:'Anton',sans-serif;font-size:12px;letter-spacing:.1em;
+      padding:5px 0;text-align:center;text-transform:uppercase;
+      transform:rotate(-32deg);z-index:5;
+      box-shadow:0 4px 12px rgba(230,57,70,.4);
+    }
+    /* Right content */
+    .f2-r{padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;position:relative;z-index:2}
+    .f2-brand{
+      font-family:'Anton',sans-serif;font-size:18px;letter-spacing:.04em;
+      color:#f0b429;margin-bottom:0;
+    }
+    .f2-brand em{color:#fff;font-style:normal}
+    .f2-h{
+      font-family:'Anton',sans-serif;font-size:28px;line-height:.92;
+      letter-spacing:.02em;text-transform:uppercase;margin:6px 0 8px;
+    }
+    .f2-h em{color:#f0b429;font-style:normal}
+    .f2-prices{display:grid;gap:4px;margin-bottom:8px}
+    .f2-pi{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;color:rgba(255,255,255,.85)}
+    .f2-pi-name{text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+    .f2-pi-val{font-family:'Anton',sans-serif;font-size:16px;letter-spacing:.01em;color:#f0b429}
+    .f2-cta{
+      background:#25D366;color:#082c14;
+      padding:8px 12px;border-radius:6px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .f2-cta-info{}
+    .f2-cta-l{font-size:8px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;opacity:.78}
+    .f2-cta-p{font-family:'Anton',sans-serif;font-size:20px;letter-spacing:.02em;line-height:1}
+    .f2-qr{background:#fff;padding:3px;border-radius:4px}
+    .f2-qr img{width:36px;height:36px}
 
-    .f1-img{width:100%;height:90px;object-fit:cover;object-position:center 40%}
-
-    .f1-prods{padding:18px 22px;display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1}
-    .f1-prod{background:#f0faf5;border:1px solid #c8e8d8;border-radius:10px;padding:12px;text-align:center}
-    .f1-prod.full{grid-column:1/-1}
-    .f1-prod-ico{font-size:24px;margin-bottom:4px}
-    .f1-prod-name{font-size:10px;font-weight:700;color:#0a4a39;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
-    .f1-prod-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:900;color:#052b22;line-height:1}
-    .f1-prod-unit{font-size:10px;color:#777;margin-top:2px}
-
-    .f1-ftr{background:#052b22;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .f1-ftr-info{}
-    .f1-ftr-lbl{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:3px}
-    .f1-ftr-phone{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:900;color:#f0b429}
-    .f1-ftr-web{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
-    .f1-qr{background:#fff;border-radius:6px;padding:3px}
-    .f1-qr img{width:60px;height:60px}
-
-    /* ════════════════════════════════════════════════
-       F2 — A6 horizontal  148 × 105 mm   REPARTO EN MANO
-    ════════════════════════════════════════════════ */
-    .f2{width:148mm;height:105mm;display:grid;grid-template-columns:1fr 1fr}
-
-    .f2-left{background:linear-gradient(145deg,#052b22 0%,#0a4a39 100%);padding:20px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative}
-    .f2-left-emoji{position:absolute;font-size:100px;bottom:-18px;right:-18px;opacity:.15;line-height:1}
-    .f2-lb{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:900;color:#fff}
-    .f2-lb em{color:#f0b429;font-style:normal}
-    .f2-lh{font-family:'Plus Jakarta Sans',sans-serif;font-size:30px;font-weight:900;color:#fff;line-height:1;position:relative}
-    .f2-lh em{color:#f0b429;font-style:normal}
-    .f2-lt{font-size:10px;color:rgba(255,255,255,.6);position:relative}
-
-    .f2-right{background:#fff;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between}
-    .f2-rtitle{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#0a4a39;margin-bottom:10px}
-    .f2-prices{display:grid;gap:7px;margin-bottom:auto}
-    .f2-pr{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid #e0f0e8;padding-bottom:5px}
-    .f2-pr:last-child{border-bottom:0}
-    .f2-pr-name{font-size:12px;font-weight:600;color:#0a4a39}
-    .f2-pr-val{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:900;color:#052b22}
-    .f2-pr-u{font-size:10px;color:#999}
-    .f2-cta{background:#25D366;border-radius:8px;padding:10px 12px;text-align:center;margin-top:10px}
-    .f2-cta-l{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(4,42,26,.65);margin-bottom:2px}
-    .f2-cta-p{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:900;color:#042a1a}
-
-    /* ════════════════════════════════════════════════
-       F3 — Tarjeta  90 × 55 mm   BOLSA / FIDELIZACIÓN
-    ════════════════════════════════════════════════ */
-    .f3-wrap{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
-    .f3{width:90mm;height:55mm;border-radius:6px;box-shadow:0 12px 30px rgba(0,0,0,.25)}
-    .f3-front{background:linear-gradient(135deg,#052b22 0%,#0f5a45 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;text-align:center}
-    .f3-fb{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:900;color:#fff}
+    /* ─────────────────────────────────────────────────
+       F3 — Tarjeta  90 × 55 mm   FRENTE + DORSO
+    ───────────────────────────────────────────────── */
+    .f3-wrap{display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;justify-content:center}
+    .f3{
+      width:90mm;height:55mm;
+      box-shadow:0 16px 40px rgba(0,0,0,.4);
+      overflow:hidden;position:relative;
+    }
+    /* Frente */
+    .f3-front{background:#0a1f17;color:#fff}
+    .f3-front-img{
+      position:absolute;inset:0;background-image:url(assets/pechuga.png);
+      background-size:cover;background-position:center 40%;
+      filter:saturate(1.1) contrast(1.05);
+    }
+    .f3-front-img::after{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(135deg,rgba(10,31,23,.92) 0%,rgba(10,31,23,.65) 60%,rgba(10,31,23,.40) 100%);
+    }
+    .f3-fcontent{
+      position:relative;z-index:2;height:100%;
+      padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;
+    }
+    .f3-fb{
+      font-family:'Anton',sans-serif;font-size:22px;letter-spacing:.04em;line-height:1;
+    }
     .f3-fb em{color:#f0b429;font-style:normal}
-    .f3-ft{font-size:9px;color:rgba(255,255,255,.65)}
-    .f3-fq{background:#fff;border-radius:5px;padding:3px}
+    .f3-ft-pre{font-size:8px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:#f0b429;margin-bottom:2px}
+    .f3-ft{font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.04em;text-transform:uppercase;line-height:1.05}
+    .f3-fbottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .f3-fbt{font-size:8px;color:rgba(255,255,255,.7);max-width:50%}
+    .f3-fbt strong{display:block;color:#f0b429;font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.04em;font-weight:400;margin-top:2px}
+    .f3-fq{background:#fff;padding:3px;border-radius:4px;flex:0 0 auto}
     .f3-fq img{width:50px;height:50px}
-    .f3-fs{font-size:8px;color:rgba(255,255,255,.5)}
-
-    .f3-back{background:#fff;border:1.5px solid #c8e8d8;padding:10px 14px;display:flex;flex-direction:column;justify-content:space-between}
-    .f3-bt{font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:900;color:#0a4a39;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
-    .f3-pl{display:grid;gap:4px}
-    .f3-pi{display:flex;justify-content:space-between;font-size:10px;color:#444;border-bottom:1px dotted #ddd;padding-bottom:3px}
-    .f3-pi:last-child{border-bottom:0;padding-bottom:0}
-    .f3-pi strong{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:#052b22}
-    .f3-bf{font-size:9px;color:#aaa;text-align:center}
-
-    /* ════════════════════════════════════════════════
-       F4 — A4 vertical  210 × 297 mm   CARTEL COMERCIO
-    ════════════════════════════════════════════════ */
-    .f4{width:210mm;min-height:297mm;display:flex;flex-direction:column}
-
-    .f4-top{background:#052b22;padding:22px 32px;display:flex;align-items:center;justify-content:space-between}
-    .f4-tb{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:900;color:#fff;letter-spacing:-.02em}
-    .f4-tb em{color:#f0b429;font-style:normal}
-    .f4-tp{font-size:12px;color:rgba(255,255,255,.6)}
-
-    .f4-img-wrap{height:200px;overflow:hidden;position:relative}
-    .f4-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center 35%}
-    .f4-img-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,43,34,.2) 0%,rgba(5,43,34,.7) 100%)}
-
-    .f4-hero{background:linear-gradient(150deg,#073a2c 0%,#0a4a39 100%);padding:40px 32px;text-align:center;color:#fff;position:relative;overflow:hidden}
-    .f4-emoji{position:absolute;font-size:160px;right:-20px;top:50%;transform:translateY(-50%);opacity:.1;line-height:1}
-    .f4-ey{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#f0b429;margin-bottom:12px}
-    .f4-h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:52px;font-weight:900;line-height:.95;margin-bottom:28px;position:relative}
-    .f4-h1 em{color:#f0b429;font-style:normal}
-    .f4-price-box{background:rgba(255,255,255,.09);border:2px solid rgba(255,255,255,.22);border-radius:18px;padding:20px 36px;display:inline-block;position:relative}
-    .f4-pb-desde{font-size:12px;color:rgba(255,255,255,.65);margin-bottom:4px;text-transform:uppercase;letter-spacing:.1em}
-    .f4-pb-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:68px;font-weight:900;color:#fff;line-height:1;letter-spacing:-.03em}
-    .f4-pb-unit{font-size:16px;color:rgba(255,255,255,.7);margin-top:4px}
-
-    .f4-prods{display:grid;grid-template-columns:repeat(3,1fr)}
-    .f4-prod{padding:22px 24px;text-align:center;background:#fff;border-right:1px solid #e0f0e8}
-    .f4-prod:last-child{border-right:0}
-    .f4-prod-ico{font-size:36px;margin-bottom:8px}
-    .f4-prod-name{font-size:11px;font-weight:700;color:#0a4a39;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
-    .f4-prod-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:30px;font-weight:900;color:#052b22;line-height:1}
-    .f4-prod-unit{font-size:11px;color:#888;margin-top:2px}
-
-    .f4-bottom{background:#25D366;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:auto}
-    .f4-wa-lbl{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(4,42,26,.7);margin-bottom:4px}
-    .f4-wa-phone{font-family:'Plus Jakarta Sans',sans-serif;font-size:42px;font-weight:900;color:#042a1a;line-height:1;letter-spacing:-.02em}
-    .f4-wa-web{font-size:12px;color:rgba(4,42,26,.6);margin-top:4px}
-    .f4-qr{background:#fff;border-radius:10px;padding:6px}
-    .f4-qr img{width:80px;height:80px}
-
-    /* ════════════════════════════════════════════════
-       F5 — Postal  148 × 105 mm   COMBOS
-    ════════════════════════════════════════════════ */
-    .f5{width:148mm;height:105mm;display:flex;flex-direction:column}
-
-    .f5-hdr{background:#052b22;padding:11px 20px;display:flex;align-items:center;justify-content:space-between}
-    .f5-hb{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:900;color:#fff}
-    .f5-hb em{color:#f0b429;font-style:normal}
-    .f5-hey{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#f0b429}
-
-    .f5-body{flex:1;display:grid;grid-template-columns:1fr 1fr}
-    .f5-combo{padding:13px 16px;display:flex;flex-direction:column;gap:5px;border-right:1px solid #e0f0e8}
-    .f5-combo:last-child{border-right:0;background:#f0faf5}
-    .f5-badge{display:inline-block;background:#f0b429;color:#052b22;font-size:8px;font-weight:800;padding:3px 8px;border-radius:999px;text-transform:uppercase;letter-spacing:.06em;width:fit-content}
-    .f5-ct{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:900;color:#052b22;line-height:1.2}
-    .f5-items{list-style:none;display:grid;gap:2px;margin:2px 0}
-    .f5-items li{font-size:10px;color:#555;display:flex;align-items:center;gap:4px}
-    .f5-items li::before{content:"✓";color:#0a4a39;font-weight:800;font-size:10px;flex:0 0 auto}
-    .f5-price{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:900;color:#052b22;line-height:1;margin-top:auto}
-
-    .f5-ftr{background:#0a4a39;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .f5-fwa{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:900;color:#25D366}
-    .f5-ftxt{font-size:10px;color:rgba(255,255,255,.55)}
-    .f5-fq{background:#fff;border-radius:4px;padding:2px}
-    .f5-fq img{width:34px;height:34px}
+    /* Dorso */
+    .f3-back{background:#fff;padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between}
+    .f3-bh{font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.04em;color:#0a1f17;text-transform:uppercase;border-bottom:2px solid #f0b429;padding-bottom:4px;margin-bottom:8px}
+    .f3-pl{display:grid;gap:4px;flex:1}
+    .f3-pi{display:flex;justify-content:space-between;align-items:baseline;font-size:10px;color:#0a1f17}
+    .f3-pi-n{font-weight:700;text-transform:uppercase;letter-spacing:.02em}
+    .f3-pi-v{font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.01em;color:#0a1f17}
+    .f3-bf{margin-top:6px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #e8f5ee;padding-top:6px}
+    .f3-bf-l{font-size:8px;color:#666;line-height:1.2}
+    .f3-bf-l strong{font-family:'Anton',sans-serif;font-weight:400;font-size:14px;color:#0a1f17;letter-spacing:.04em;display:block;margin-top:2px}
+    .f3-bf-wa{
+      background:#25D366;color:#082c14;
+      font-family:'Anton',sans-serif;font-size:10px;
+      padding:5px 10px;border-radius:999px;letter-spacing:.04em;
+      white-space:nowrap;
+    }
 
     /* ── PRINT ──────────────────────────────────────── */
     @media print{
       body{background:#fff;padding:0}
-      .pg-header,.fw-meta,.btn-imp{display:none!important}
+      .pg-h,.fw-meta,.btn-imp,.btn-row{display:none!important}
       .fw{margin:0;max-width:none;page-break-after:always}
       .fw:last-child{page-break-after:avoid}
-      .fw-preview{justify-content:flex-start}
+      .fw-prev{justify-content:flex-start}
+      .f1,.f2,.f3{box-shadow:none}
+      *{print-color-adjust:exact;-webkit-print-color-adjust:exact}
     }
   </style>
 </head>
 <body>
 
-<div class="pg-header">
-  <h1>FD Avícola — 5 Folletos para Imprenta</h1>
-  <p>Hacé click en "Imprimir" en el folleto que querés. Se abre solo ese formato listo para PDF o impresora.</p>
+<div class="pg-h">
+  <h1>FD Avícola · Folletos minorista</h1>
+  <p>Diseño tipo cartel de carnicería: contraste alto, precios grandes, foto de producto. Hacé click en imprimir y se abre la ventana lista para PDF/imprenta.</p>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     FOLLETO 1 — A5 vertical · Buzoneo casa por casa
+<!-- ════════════════════════════════════════════════════
+     F1 — A5 vertical · BUZONEO
 ════════════════════════════════════════════════════════ -->
-<div class="fw" id="wrap1">
+<div class="fw">
   <div class="fw-meta">
-    <span class="fw-title">Folleto 1 — A5 vertical</span>
-    <span class="fw-size">148 × 210 mm · Ideal para buzoneo</span>
+    <span class="fw-title">F1 — A5 Buzoneo</span>
+    <span class="fw-size">148 × 210 mm</span>
   </div>
-  <div class="fw-preview">
-    <div class="f f1" id="f1">
-      <!-- Header -->
-      <div class="f1-hdr">
-        <div class="f1-brand">FD <em>Avícola</em></div>
-        <div class="f1-tag">Venta minorista</div>
+  <div class="fw-prev">
+    <div class="f1" id="f1">
+      <div class="f1-ribbon">¡FRESCO HOY!</div>
+      <div class="f1-brand">FD <em>Avícola</em></div>
+
+      <div class="f1-photo-wrap">
+        <img src="assets/pechuga.png" alt="Pechuga fresca" />
       </div>
-      <!-- Hero -->
-      <div class="f1-hero">
-        <div class="f1-hero-emoji">🐔</div>
-        <div class="f1-eyebrow">Pollo fresco · Entrega a domicilio</div>
-        <div class="f1-h1">Pollo fresco y huevos a tu casa</div>
-        <div class="f1-lead">Pedí por WhatsApp y coordinamos la entrega en tu zona.</div>
+
+      <div class="f1-headline">
+        <div class="f1-h1-pre">Pollo + Huevos a domicilio</div>
+        <div class="f1-h1">Fresco a tu <em>casa</em></div>
       </div>
-      <!-- Foto producto -->
-      <img class="f1-img" src="assets/pechuga.png" alt="Pechuga de pollo fresca" />
-      <!-- Productos -->
-      <div class="f1-prods">
-        <div class="f1-prod">
-          <div class="f1-prod-ico">🍗</div>
-          <div class="f1-prod-name">Pechuga</div>
-          <div class="f1-prod-price">$11.999</div>
-          <div class="f1-prod-unit">por kg</div>
+
+      <div class="f1-prices">
+        <div class="f1-pi hero">
+          <div class="f1-pi-name">Pechuga</div>
+          <div class="f1-pi-price">$11.999<span class="f1-pi-unit">/kg</span></div>
         </div>
-        <div class="f1-prod">
-          <div class="f1-prod-ico">🍗</div>
-          <div class="f1-prod-name">Pata muslo</div>
-          <div class="f1-prod-price">$3.999</div>
-          <div class="f1-prod-unit">por kg</div>
+        <div class="f1-pi">
+          <div class="f1-pi-name">Pata muslo</div>
+          <div class="f1-pi-price">$3.999<span class="f1-pi-unit">/kg</span></div>
         </div>
-        <div class="f1-prod full">
-          <div class="f1-prod-ico">🥚</div>
-          <div class="f1-prod-name">Maple de huevos (30 u.)</div>
-          <div class="f1-prod-price">$5.500</div>
-          <div class="f1-prod-unit">por maple</div>
+        <div class="f1-pi">
+          <div class="f1-pi-name">Maple 30u</div>
+          <div class="f1-pi-price">$5.500</div>
         </div>
       </div>
-      <!-- Footer -->
-      <div class="f1-ftr">
-        <div class="f1-ftr-info">
-          <div class="f1-ftr-lbl">Pedí por WhatsApp</div>
-          <div class="f1-ftr-phone">+54 11 3946-7076</div>
-          <div class="f1-ftr-web">fdavicola.com/minorista</div>
+
+      <div class="f1-cta">
+        <div>
+          <div class="f1-cta-l">Pedí por WhatsApp</div>
+          <div class="f1-cta-p">11 3946-7076</div>
+          <div class="f1-cta-w">fdavicola.com/minorista</div>
         </div>
         <div class="f1-qr">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fwa.me%2F541139467076&bgcolor=ffffff&color=052b22&margin=4" alt="QR WhatsApp" />
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fwa.me%2F541139467076&bgcolor=ffffff&color=082c14&margin=4&qzone=2" alt="QR" />
         </div>
       </div>
     </div>
   </div>
-  <div style="text-align:center">
-    <button class="btn-imp" onclick="printFolleto('f1','A5 portrait')">🖨 Imprimir Folleto 1</button>
+  <div class="btn-row">
+    <button class="btn-imp" onclick="printFolleto('f1','A5 portrait')">🖨 Imprimir A5</button>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     FOLLETO 2 — A6 horizontal · Reparto en mano
+<!-- ════════════════════════════════════════════════════
+     F2 — A6 horizontal · REPARTO EN MANO
 ════════════════════════════════════════════════════════ -->
-<div class="fw" id="wrap2">
+<div class="fw">
   <div class="fw-meta">
-    <span class="fw-title">Folleto 2 — A6 horizontal</span>
-    <span class="fw-size">148 × 105 mm · Para dar en mano o en semáforos</span>
+    <span class="fw-title">F2 — A6 reparto en mano</span>
+    <span class="fw-size">148 × 105 mm</span>
   </div>
-  <div class="fw-preview">
-    <div class="f f2" id="f2">
-      <div class="f2-left">
-        <div class="f2-lb">FD <em>Avícola</em></div>
-        <div class="f2-lh">Pollo<br/><em>fresco</em><br/>en tu casa</div>
-        <div class="f2-lt">GBA Norte · CABA · Entrega coordinada</div>
-        <div class="f2-left-emoji">🐔</div>
+  <div class="fw-prev">
+    <div class="f2" id="f2">
+      <div class="f2-l">
+        <img src="assets/pechuga.png" alt="Pechuga" />
+        <div class="f2-badge">¡fresco!</div>
       </div>
-      <div class="f2-right">
-        <div class="f2-rtitle">Lista de precios</div>
-        <div class="f2-prices">
-          <div class="f2-pr">
-            <span class="f2-pr-name">Pechuga</span>
-            <span class="f2-pr-val">$11.999 <span class="f2-pr-u">/kg</span></span>
-          </div>
-          <div class="f2-pr">
-            <span class="f2-pr-name">Pata muslo</span>
-            <span class="f2-pr-val">$3.999 <span class="f2-pr-u">/kg</span></span>
-          </div>
-          <div class="f2-pr">
-            <span class="f2-pr-name">Maple huevos</span>
-            <span class="f2-pr-val">$5.500 <span class="f2-pr-u">/maple</span></span>
+      <div class="f2-r">
+        <div>
+          <div class="f2-brand">FD <em>Avícola</em></div>
+          <div class="f2-h">Pollo<br/>fresco a<br/><em>tu casa</em></div>
+          <div class="f2-prices">
+            <div class="f2-pi"><span class="f2-pi-name">Pechuga</span><span class="f2-pi-val">$11.999/kg</span></div>
+            <div class="f2-pi"><span class="f2-pi-name">Pata muslo</span><span class="f2-pi-val">$3.999/kg</span></div>
+            <div class="f2-pi"><span class="f2-pi-name">Maple 30 u.</span><span class="f2-pi-val">$5.500</span></div>
           </div>
         </div>
         <div class="f2-cta">
-          <div class="f2-cta-l">Pedí por WhatsApp</div>
-          <div class="f2-cta-p">11 3946-7076</div>
+          <div class="f2-cta-info">
+            <div class="f2-cta-l">WhatsApp</div>
+            <div class="f2-cta-p">11 3946-7076</div>
+          </div>
+          <div class="f2-qr">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https%3A%2F%2Fwa.me%2F541139467076&bgcolor=ffffff&color=082c14&margin=2&qzone=1" alt="QR" />
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div style="text-align:center">
-    <button class="btn-imp" onclick="printFolleto('f2','A6 landscape')">🖨 Imprimir Folleto 2</button>
+  <div class="btn-row">
+    <button class="btn-imp" onclick="printFolleto('f2','A6 landscape')">🖨 Imprimir A6</button>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     FOLLETO 3 — Tarjeta · Para cada bolsa
+<!-- ════════════════════════════════════════════════════
+     F3 — Tarjeta  Frente + Dorso
 ════════════════════════════════════════════════════════ -->
-<div class="fw" id="wrap3">
+<div class="fw">
   <div class="fw-meta">
-    <span class="fw-title">Folleto 3 — Tarjeta doble faz</span>
-    <span class="fw-size">90 × 55 mm · Para dejar en cada bolsa que entregás</span>
+    <span class="fw-title">F3 — Tarjeta doble faz</span>
+    <span class="fw-size">90 × 55 mm</span>
   </div>
-  <div class="fw-preview">
+  <div class="fw-prev">
     <div class="f3-wrap">
       <!-- Frente -->
-      <div class="f f3 f3-front" id="f3-front">
-        <div class="f3-fb">FD <em>Avícola</em></div>
-        <div class="f3-ft">Pollo fresco · GBA Norte · CABA</div>
-        <div class="f3-fq">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https%3A%2F%2Fwa.me%2F541139467076&bgcolor=ffffff&color=052b22&margin=4" alt="QR" />
+      <div class="f3 f3-front" id="f3-front">
+        <div class="f3-front-img"></div>
+        <div class="f3-fcontent">
+          <div>
+            <div class="f3-fb">FD <em>Avícola</em></div>
+            <div style="margin-top:auto"></div>
+          </div>
+          <div>
+            <div class="f3-ft-pre">Pollo fresco · Huevos</div>
+            <div class="f3-ft">a tu casa<br/>en GBA Norte</div>
+          </div>
+          <div class="f3-fbottom">
+            <div class="f3-fbt">
+              Pedí por WhatsApp
+              <strong>11 3946-7076</strong>
+            </div>
+            <div class="f3-fq">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=https%3A%2F%2Fwa.me%2F541139467076&bgcolor=ffffff&color=082c14&margin=4&qzone=2" alt="QR" />
+            </div>
+          </div>
         </div>
-        <div class="f3-fs">Escaneá para pedir de nuevo</div>
       </div>
       <!-- Dorso -->
-      <div class="f f3 f3-back" id="f3-back">
-        <div class="f3-bt">Lista de precios</div>
+      <div class="f3 f3-back" id="f3-back">
+        <div class="f3-bh">Lista de precios</div>
         <div class="f3-pl">
-          <div class="f3-pi"><span>Pechuga de pollo</span><strong>$11.999/kg</strong></div>
-          <div class="f3-pi"><span>Pata muslo</span><strong>$3.999/kg</strong></div>
-          <div class="f3-pi"><span>Maple 30 huevos</span><strong>$5.500</strong></div>
-          <div class="f3-pi"><span>Combo pechuga+2 maples</span><strong>$130.990</strong></div>
+          <div class="f3-pi"><span class="f3-pi-n">Pechuga de pollo</span><span class="f3-pi-v">$11.999/kg</span></div>
+          <div class="f3-pi"><span class="f3-pi-n">Pata muslo</span><span class="f3-pi-v">$3.999/kg</span></div>
+          <div class="f3-pi"><span class="f3-pi-n">Maple 30 huevos</span><span class="f3-pi-v">$5.500</span></div>
+          <div class="f3-pi"><span class="f3-pi-n">Combo pechuga + 2 maples</span><span class="f3-pi-v">$130.990</span></div>
+          <div class="f3-pi"><span class="f3-pi-n">Combo p. muslo + 1 maple</span><span class="f3-pi-v">$25.495</span></div>
         </div>
-        <div class="f3-bf">fdavicola.com · +54 11 3946-7076</div>
-      </div>
-    </div>
-  </div>
-  <div style="text-align:center">
-    <button class="btn-imp" onclick="printFolleto('f3-front','portrait',true)">🖨 Imprimir Frente</button>
-    &nbsp;
-    <button class="btn-imp" onclick="printFolleto('f3-back','portrait',true)">🖨 Imprimir Dorso</button>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════
-     FOLLETO 4 — A4 vertical · Cartel para comercios
-════════════════════════════════════════════════════════ -->
-<div class="fw" id="wrap4">
-  <div class="fw-meta">
-    <span class="fw-title">Folleto 4 — Cartel A4</span>
-    <span class="fw-size">210 × 297 mm · Para pegar en almacenes, peluquerías, comercios aliados</span>
-  </div>
-  <div class="fw-preview">
-    <div class="f f4" id="f4">
-      <!-- Top bar -->
-      <div class="f4-top">
-        <div class="f4-tb">FD <em>Avícola</em></div>
-        <div class="f4-tp">Distribución · GBA Norte · CABA</div>
-      </div>
-      <!-- Imagen -->
-      <div class="f4-img-wrap">
-        <img src="assets/pechuga.png" alt="Pechuga fresca" />
-        <div class="f4-img-overlay"></div>
-      </div>
-      <!-- Hero -->
-      <div class="f4-hero">
-        <div class="f4-emoji">🐔</div>
-        <div class="f4-ey">Venta minorista · Entrega a domicilio</div>
-        <div class="f4-h1">Pollo fresco<br/><em>a tu casa</em></div>
-        <div class="f4-price-box">
-          <div class="f4-pb-desde">Desde</div>
-          <div class="f4-pb-price">$3.999</div>
-          <div class="f4-pb-unit">el kilo · cadena de frío garantizada</div>
-        </div>
-      </div>
-      <!-- 3 productos -->
-      <div class="f4-prods">
-        <div class="f4-prod">
-          <div class="f4-prod-ico">🍗</div>
-          <div class="f4-prod-name">Pechuga</div>
-          <div class="f4-prod-price">$11.999</div>
-          <div class="f4-prod-unit">por kg</div>
-        </div>
-        <div class="f4-prod">
-          <div class="f4-prod-ico">🍗</div>
-          <div class="f4-prod-name">Pata muslo</div>
-          <div class="f4-prod-price">$3.999</div>
-          <div class="f4-prod-unit">por kg</div>
-        </div>
-        <div class="f4-prod">
-          <div class="f4-prod-ico">🥚</div>
-          <div class="f4-prod-name">Maple huevos</div>
-          <div class="f4-prod-price">$5.500</div>
-          <div class="f4-prod-unit">30 unidades</div>
-        </div>
-      </div>
-      <!-- Bottom WA -->
-      <div class="f4-bottom">
-        <div>
-          <div class="f4-wa-lbl">Pedí por WhatsApp</div>
-          <div class="f4-wa-phone">+54 11 3946-7076</div>
-          <div class="f4-wa-web">fdavicola.com/minorista</div>
-        </div>
-        <div class="f4-qr">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fwa.me%2F541139467076&bgcolor=ffffff&color=042a1a&margin=6" alt="QR" />
+        <div class="f3-bf">
+          <div class="f3-bf-l">
+            fdavicola.com/minorista
+            <strong>11 3946-7076</strong>
+          </div>
+          <div class="f3-bf-wa">WhatsApp</div>
         </div>
       </div>
     </div>
   </div>
-  <div style="text-align:center">
-    <button class="btn-imp" onclick="printFolleto('f4','A4 portrait')">🖨 Imprimir Folleto 4</button>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════
-     FOLLETO 5 — Postal 148×105 · Combos
-════════════════════════════════════════════════════════ -->
-<div class="fw" id="wrap5">
-  <div class="fw-meta">
-    <span class="fw-title">Folleto 5 — Postal Combos</span>
-    <span class="fw-size">148 × 105 mm · Para clientes frecuentes, vecinos VIP</span>
-  </div>
-  <div class="fw-preview">
-    <div class="f f5" id="f5">
-      <div class="f5-hdr">
-        <div class="f5-hb">FD <em>Avícola</em></div>
-        <div class="f5-hey">Combos especiales</div>
-      </div>
-      <div class="f5-body">
-        <div class="f5-combo">
-          <div class="f5-badge">Combo Pechuga</div>
-          <div class="f5-ct">10 kg pechuga<br/>+ 2 maples</div>
-          <ul class="f5-items">
-            <li>10 kg pechuga de pollo</li>
-            <li>60 huevos frescos</li>
-            <li>Ahorrás vs. precio unidad</li>
-          </ul>
-          <div class="f5-price">$130.990</div>
-        </div>
-        <div class="f5-combo">
-          <div class="f5-badge">Combo Económico</div>
-          <div class="f5-ct">5 kg pata muslo<br/>+ 1 maple</div>
-          <ul class="f5-items">
-            <li>5 kg pata muslo</li>
-            <li>30 huevos frescos</li>
-            <li>Ideal para la semana</li>
-          </ul>
-          <div class="f5-price">$25.495</div>
-        </div>
-      </div>
-      <div class="f5-ftr">
-        <div class="f5-fwa">+54 11 3946-7076</div>
-        <div class="f5-ftxt">Pedí por WhatsApp · fdavicola.com</div>
-        <div class="f5-fq">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=70x70&data=https%3A%2F%2Fwa.me%2F541139467076&bgcolor=ffffff&color=042a1a&margin=2" alt="QR" />
-        </div>
-      </div>
-    </div>
-  </div>
-  <div style="text-align:center">
-    <button class="btn-imp" onclick="printFolleto('f5','A6 landscape')">🖨 Imprimir Folleto 5</button>
+  <div class="btn-row">
+    <button class="btn-imp" onclick="printFolleto('f3-front','portrait',true)">🖨 Frente</button>
+    <button class="btn-imp" onclick="printFolleto('f3-back','portrait',true)">🖨 Dorso</button>
   </div>
 </div>
 
 <script>
-function printFolleto(id, pageSize, card) {
+function printFolleto(id, pageSize, isCard){
   const el = document.getElementById(id);
-  const css = document.querySelectorAll('link[rel=stylesheet], style');
   let styles = '';
-  css.forEach(s => { styles += s.outerHTML || '<style>' + s.textContent + '</style>'; });
-  const w = window.open('', '_blank', 'width=900,height=700');
+  document.querySelectorAll('link[rel=stylesheet], style').forEach(s => {
+    styles += s.outerHTML || ('<style>' + s.textContent + '</style>');
+  });
+  const w = window.open('', '_blank', 'width=900,height=720');
   w.document.write(`<!doctype html><html><head><meta charset="utf-8">
     <title>FD Avícola · Folleto</title>
     ${styles}
     <style>
       @page { size: ${pageSize}; margin: 0; }
       html, body { margin: 0; padding: 0; background: #fff; }
-      body { display: flex; justify-content: center; align-items: flex-start; padding: ${card ? '20mm' : '0'}; }
+      body { display: flex; justify-content: center; align-items: flex-start; padding: ${isCard ? '20mm' : '0'}; }
+      *{print-color-adjust:exact;-webkit-print-color-adjust:exact}
     </style>
   </head><body>${el.outerHTML}</body></html>`);
   w.document.close();

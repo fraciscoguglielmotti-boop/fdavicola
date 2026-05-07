@@ -1230,3 +1230,249 @@ section[id]{ scroll-margin-top: 90px; }
 @media (max-width: 620px){
   .testimonial{ padding: 22px 20px; }
 }
+
+/* =========================================================
+   SHOP — Tienda Minorista (estilos profesionales)
+   ========================================================= */
+
+/* Trust strip debajo del hero */
+.shop-trust{
+  background:#fff;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:22px 0;
+}
+.shop-trust-inner{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0,1fr));
+  gap:24px;
+  align-items:center;
+}
+.shop-trust-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:13px;
+  color:var(--ink-700);
+}
+.shop-trust-ico{
+  font-size:24px;
+  line-height:1;
+  flex:0 0 auto;
+}
+.shop-trust-item strong{
+  display:block;
+  font-weight:700;
+  color:var(--ink-900);
+  font-size:14px;
+}
+.shop-trust-item span{
+  font-size:12.5px;
+  color:var(--muted);
+}
+@media (max-width:880px){
+  .shop-trust-inner{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:16px; }
+}
+@media (max-width:480px){
+  .shop-trust-inner{ grid-template-columns:1fr; gap:12px; }
+}
+
+/* Sección de tienda con fondo crema para que las cards resalten */
+.shop-page .shop-section{
+  background:#f7f5ef;
+}
+.shop-page .shop-section.section-cream{
+  background:#f1ede2;
+}
+
+/* Cards de producto — modo TIENDA */
+.shop-page .product{
+  background:#fff;
+  border:1.5px solid #e6e8ec;
+  border-radius:16px;
+  box-shadow:0 4px 14px rgba(11,18,32,.06);
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.shop-page .product:hover{
+  transform:translateY(-6px);
+  box-shadow:0 24px 50px rgba(11,18,32,.13);
+  border-color:var(--green-500);
+}
+
+/* Imagen del producto: media tag visible */
+.shop-page .product-media{
+  position:relative;
+  aspect-ratio:1/1;
+  overflow:hidden;
+  background:#fafafa;
+  border-bottom:1px solid #f0eee6;
+}
+.shop-page .product-media img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+
+/* Badge del producto — pill blanco visible */
+.shop-page .product-tag{
+  position:absolute;
+  top:12px;
+  left:12px;
+  z-index:5;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 12px;
+  background:#fff;
+  color:var(--green-700);
+  font-size:11.5px;
+  font-weight:800;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  border-radius:999px;
+  border:1px solid rgba(15,90,69,.15);
+  box-shadow:0 2px 8px rgba(11,18,32,.10);
+}
+.shop-page .product-tag .icon{
+  width:14px;
+  height:14px;
+  color:var(--green-600);
+}
+
+/* Body del producto */
+.shop-page .product-body{
+  padding:22px 22px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  flex:1;
+}
+.shop-page .product h3{
+  font-family:var(--font-display);
+  font-size:21px;
+  font-weight:800;
+  letter-spacing:-.022em;
+  color:var(--ink-900);
+  margin:0;
+  line-height:1.2;
+}
+.shop-page .product-desc{
+  font-size:14px;
+  color:var(--muted);
+  margin:0 0 10px;
+  line-height:1.5;
+  min-height:42px;
+}
+
+/* Specs (combos) */
+.shop-page .specs{
+  margin:6px 0 14px;
+  display:grid;
+  gap:6px;
+  list-style:none;
+  padding:0;
+}
+.shop-page .specs li{
+  font-size:13px;
+  color:var(--ink-700);
+  position:relative;
+  padding-left:20px;
+}
+.shop-page .specs li::before{
+  content:"";
+  position:absolute;
+  left:0; top:7px;
+  width:14px; height:14px;
+  background:var(--green-100);
+  border-radius:50%;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='%230f5a45' d='M6.5 11.2 3.3 8l1.1-1.1 2.1 2.1 5-5 1.1 1.1z'/></svg>");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:11px;
+  color:transparent;
+  font-size:0;
+}
+
+/* Price row con jerarquía clara */
+.shop-page .price-row{
+  margin:6px 0 16px;
+  padding:14px 0 12px;
+  border-top:1px dashed #e6e8ec;
+  border-bottom:1px dashed #e6e8ec;
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:8px;
+}
+.shop-page .price{
+  font-family:var(--font-display);
+  font-size:30px;
+  font-weight:800;
+  letter-spacing:-.025em;
+  color:var(--ink-900);
+  line-height:1;
+}
+.shop-page .price-unit{
+  font-size:14px;
+  color:var(--muted);
+  font-weight:600;
+}
+
+/* Foot con botón Pedir full-width verde WhatsApp */
+.shop-page .product-foot{
+  margin-top:auto;
+  display:block;
+}
+.shop-page .product-foot .btn{
+  width:100%;
+  padding:14px 20px;
+  font-size:15px;
+  font-weight:700;
+  letter-spacing:.01em;
+  border-radius:12px;
+  box-shadow:0 6px 16px rgba(37,211,102,.28);
+  transition:all .2s ease;
+}
+.shop-page .product-foot .btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(37,211,102,.38);
+}
+.shop-page .product-foot .btn .icon{
+  width:18px; height:18px;
+}
+
+/* Combo badge mejorado */
+.shop-page .product.combo{
+  border:2px solid #f0d68b;
+  background:linear-gradient(180deg, #fffbf0 0%, #fff 30%);
+}
+.shop-page .product.combo:hover{
+  border-color:var(--gold-500);
+}
+.shop-page .combo-badge{
+  position:absolute;
+  top:12px;
+  left:12px;
+  z-index:5;
+  background:var(--gold-500);
+  color:var(--green-900);
+  font-family:var(--font-display);
+  font-size:12px;
+  font-weight:800;
+  padding:8px 14px;
+  border-radius:999px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  box-shadow:0 4px 14px rgba(240,180,41,.40);
+}
+
+/* Grid 3-col / 2-col mejor en mobile */
+@media (max-width:920px){
+  .shop-page .cards.three-col{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:16px; }
+}
+@media (max-width:640px){
+  .shop-page .cards.three-col{ grid-template-columns:1fr; }
+  .shop-page .product-body{ padding:20px; }
+  .shop-page .price{ font-size:26px; }
+}
