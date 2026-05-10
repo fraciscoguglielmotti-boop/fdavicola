@@ -7,234 +7,419 @@
   <meta name="robots" content="noindex,nofollow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@500;700;900&family=Archivo+Black&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700;900&display=swap" />
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     img{display:block;max-width:100%;height:auto}
-    body{font-family:'Inter',sans-serif;background:#0d1119;padding:48px 20px}
+    body{font-family:'Inter',sans-serif;background:#050d0a;padding:48px 20px;color:#fff}
 
-    /* ── PREVIEW SHELL ─────────────────────────────── */
-    .pg-h{text-align:center;margin-bottom:48px}
-    .pg-h h1{font-family:'Anton',sans-serif;font-size:36px;font-weight:400;color:#fff;letter-spacing:.02em;margin-bottom:8px}
-    .pg-h p{color:rgba(255,255,255,.5);font-size:14px;max-width:560px;margin:0 auto}
+    :root{
+      --dk:#0a2416;
+      --dk2:#0c2e1a;
+      --dk3:#0f3820;
+      --gold:#f0b429;
+      --red:#c41c0a;
+      --wa:#25D366;
+      --wa-dark:#082c14;
+    }
 
-    .fw{max-width:980px;margin:0 auto 80px}
-    .fw-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;padding:0 4px}
-    .fw-title{font-family:'Anton',sans-serif;font-size:18px;font-weight:400;color:#f0b429;letter-spacing:.06em;text-transform:uppercase}
+    /* ── PREVIEW SHELL ─────────────────────────── */
+    .pg-h{text-align:center;margin-bottom:56px}
+    .pg-h h1{font-family:'Anton',sans-serif;font-size:30px;font-weight:400;color:#fff;letter-spacing:.04em;margin-bottom:8px}
+    .pg-h p{color:rgba(255,255,255,.45);font-size:14px;max-width:560px;margin:0 auto}
+
+    .fw{max-width:1200px;margin:0 auto 80px}
+    .fw-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:0 4px;flex-wrap:wrap;gap:8px}
+    .fw-title{font-family:'Anton',sans-serif;font-size:17px;font-weight:400;color:var(--gold);letter-spacing:.06em;text-transform:uppercase}
     .fw-size{font-size:12px;color:rgba(255,255,255,.35);font-weight:600}
-    .fw-prev{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:18px}
-    .btn-imp{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:#f0b429;color:#0a1814;font-weight:800;font-size:13px;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.04em;text-transform:uppercase;transition:all .15s}
+    .fw-prev{display:flex;justify-content:center;margin-bottom:18px}
+    .btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn-imp{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:var(--gold);color:#0a1814;font-weight:800;font-size:13px;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.04em;text-transform:uppercase;transition:all .15s}
     .btn-imp:hover{background:#fff;transform:translateY(-2px)}
-    .btn-row{text-align:center;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 
-    /* ─────────────────────────────────────────────────
-       F1 — A5 vertical · BUZONEO  148 × 210 mm
-    ───────────────────────────────────────────────── */
+    /* ── BADGE FRESCO HOY (shared) ──────────────── */
+    .badge-fresco{
+      width:62px;height:62px;border-radius:50%;
+      background:var(--dk);
+      border:3px solid var(--gold);
+      box-shadow:0 0 0 1.5px rgba(240,180,41,.35);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;flex-shrink:0;
+    }
+    .badge-fresco .bstars{font-size:7px;letter-spacing:1.5px;color:var(--gold);margin-bottom:1px}
+    .badge-fresco .bt1{font-family:'Anton',sans-serif;font-size:11px;color:#fff;line-height:1;letter-spacing:.04em}
+    .badge-fresco .bt2{font-family:'Anton',sans-serif;font-size:11px;color:var(--gold);line-height:1;letter-spacing:.04em}
+
+    /* ══════════════════════════════════════════════
+       F1 — A5 VERTICAL  148 × 210 mm
+    ══════════════════════════════════════════════ */
     .f1{
       width:148mm;height:210mm;
-      background:#0a1f17;color:#fff;
-      position:relative;overflow:hidden;
-      box-shadow:0 30px 60px rgba(0,0,0,.4);
+      background:var(--dk);color:#fff;
       display:flex;flex-direction:column;
-    }
-    /* Cinta diagonal "OFERTA" */
-    .f1-ribbon{
-      position:absolute;top:24px;left:-58px;width:230px;
-      background:#e63946;color:#fff;
-      font-family:'Anton',sans-serif;font-size:18px;letter-spacing:.08em;
-      padding:8px 0;text-align:center;
-      transform:rotate(-32deg);
-      box-shadow:0 6px 16px rgba(230,57,70,.45);
-      z-index:10;
-    }
-    /* Brand top */
-    .f1-brand{
-      position:absolute;top:18px;right:22px;
-      font-family:'Anton',sans-serif;font-size:24px;letter-spacing:.04em;
-      color:#fff;z-index:10;
-    }
-    .f1-brand em{color:#f0b429;font-style:normal}
-    /* Hero photo */
-    .f1-photo-wrap{
-      height:75mm;position:relative;overflow:hidden;
-    }
-    .f1-photo-wrap img{
-      width:100%;height:100%;object-fit:cover;object-position:center 35%;
-      filter:saturate(1.15) contrast(1.05);
-    }
-    .f1-photo-wrap::after{
-      content:"";position:absolute;inset:0;
-      background:linear-gradient(180deg,rgba(10,31,23,.30) 0%,rgba(10,31,23,.95) 100%);
-    }
-    /* Big headline */
-    .f1-headline{
-      position:absolute;left:0;right:0;top:55mm;
-      text-align:center;padding:0 18px;z-index:5;
-    }
-    .f1-h1-pre{
-      font-family:'Anton',sans-serif;font-size:18px;letter-spacing:.18em;
-      color:#f0b429;margin-bottom:4px;text-transform:uppercase;
-    }
-    .f1-h1{
-      font-family:'Anton',sans-serif;font-size:54px;line-height:.92;
-      color:#fff;letter-spacing:.02em;text-transform:uppercase;
-      text-shadow:0 4px 18px rgba(0,0,0,.5);
-    }
-    .f1-h1 em{color:#f0b429;font-style:normal}
-    /* Price grid */
-    .f1-prices{
-      flex:1;background:#0a1f17;padding:24px 22px 18px;
-      display:flex;flex-direction:column;gap:10px;
-    }
-    .f1-pi{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:12px 16px;border-radius:8px;
-      background:#fff;color:#0a1f17;
-      box-shadow:inset 0 0 0 3px #0a1f17;
-    }
-    .f1-pi.hero{background:#f0b429;box-shadow:none;color:#0a1f17}
-    .f1-pi-name{
-      font-family:'Anton',sans-serif;font-size:24px;letter-spacing:.04em;
-      text-transform:uppercase;
-    }
-    .f1-pi-price{
-      font-family:'Anton',sans-serif;font-size:32px;line-height:1;
-      letter-spacing:-.01em;
-    }
-    .f1-pi-unit{font-size:13px;font-weight:700;margin-left:4px;opacity:.7}
-    /* Bottom WA stripe */
-    .f1-cta{
-      background:#25D366;padding:14px 22px;
-      display:flex;align-items:center;justify-content:space-between;gap:14px;
-    }
-    .f1-cta-l{
-      font-family:'Inter',sans-serif;font-size:11px;font-weight:900;
-      letter-spacing:.14em;text-transform:uppercase;
-      color:rgba(8,30,15,.78);margin-bottom:2px;
-    }
-    .f1-cta-p{
-      font-family:'Anton',sans-serif;font-size:30px;letter-spacing:.02em;
-      color:#082c14;line-height:1;
-    }
-    .f1-cta-w{
-      font-size:10px;font-weight:700;color:rgba(8,30,15,.6);margin-top:3px;
-    }
-    .f1-qr{background:#fff;padding:5px;border-radius:6px}
-    .f1-qr img{width:62px;height:62px}
-
-    /* ─────────────────────────────────────────────────
-       F2 — A6 horizontal · REPARTO EN MANO  148 × 105 mm
-    ───────────────────────────────────────────────── */
-    .f2{
-      width:148mm;height:105mm;
-      background:#0a1f17;color:#fff;position:relative;
       overflow:hidden;
-      box-shadow:0 30px 60px rgba(0,0,0,.4);
-      display:grid;grid-template-columns:55mm 1fr;
+      box-shadow:0 30px 70px rgba(0,0,0,.55);
     }
-    /* Left photo */
-    .f2-l{position:relative;overflow:hidden}
-    .f2-l img{width:100%;height:100%;object-fit:cover;object-position:center 40%;filter:saturate(1.15) contrast(1.05)}
-    .f2-l::after{
-      content:"";position:absolute;inset:0;
-      background:linear-gradient(90deg,rgba(10,31,23,.05) 0%,rgba(10,31,23,.55) 90%,#0a1f17 100%);
-    }
-    /* Diagonal red badge */
-    .f2-badge{
-      position:absolute;top:8px;left:-38px;width:160px;
-      background:#e63946;color:#fff;
-      font-family:'Anton',sans-serif;font-size:12px;letter-spacing:.1em;
-      padding:5px 0;text-align:center;text-transform:uppercase;
-      transform:rotate(-32deg);z-index:5;
-      box-shadow:0 4px 12px rgba(230,57,70,.4);
-    }
-    /* Right content */
-    .f2-r{padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;position:relative;z-index:2}
-    .f2-brand{
-      font-family:'Anton',sans-serif;font-size:18px;letter-spacing:.04em;
-      color:#f0b429;margin-bottom:0;
-    }
-    .f2-brand em{color:#fff;font-style:normal}
-    .f2-h{
-      font-family:'Anton',sans-serif;font-size:28px;line-height:.92;
-      letter-spacing:.02em;text-transform:uppercase;margin:6px 0 8px;
-    }
-    .f2-h em{color:#f0b429;font-style:normal}
-    .f2-prices{display:grid;gap:4px;margin-bottom:8px}
-    .f2-pi{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;color:rgba(255,255,255,.85)}
-    .f2-pi-name{text-transform:uppercase;letter-spacing:.04em;font-weight:700}
-    .f2-pi-val{font-family:'Anton',sans-serif;font-size:16px;letter-spacing:.01em;color:#f0b429}
-    .f2-cta{
-      background:#25D366;color:#082c14;
-      padding:8px 12px;border-radius:6px;
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-    }
-    .f2-cta-info{}
-    .f2-cta-l{font-size:8px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;opacity:.78}
-    .f2-cta-p{font-family:'Anton',sans-serif;font-size:20px;letter-spacing:.02em;line-height:1}
-    .f2-qr{background:#fff;padding:3px;border-radius:4px}
-    .f2-qr img{width:36px;height:36px}
 
-    /* ─────────────────────────────────────────────────
-       F3 — Tarjeta  90 × 55 mm   FRENTE + DORSO
-    ───────────────────────────────────────────────── */
-    .f3-wrap{display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;justify-content:center}
+    /* Header */
+    .f1-header{
+      display:flex;align-items:center;gap:8px;
+      padding:9px 11px 6px;flex-shrink:0;
+    }
+    .f1-logo{height:34px;width:auto}
+    .f1-hd-text{flex:1;padding:0 6px}
+    .f1-hd-sub1{font-size:6.5px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);line-height:1.3}
+    .f1-hd-sub2{font-size:5.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.65);line-height:1.4}
+    .f1-badge{width:56px;height:56px}
+    .f1-badge .bstars{font-size:6.5px}
+    .f1-badge .bt1{font-size:10px}
+    .f1-badge .bt2{font-size:10px}
+
+    /* Hero headline */
+    .f1-hero{
+      text-align:center;
+      padding:5px 10px 4px;
+      border-top:1px solid rgba(240,180,41,.2);
+      flex-shrink:0;
+    }
+    .f1-hero h2{
+      font-family:'Anton',sans-serif;
+      font-size:40px;line-height:.9;
+      letter-spacing:.01em;text-transform:uppercase;
+      color:#fff;
+    }
+
+    /* Tagline bar */
+    .f1-tagline{
+      background:var(--dk2);
+      padding:5px 12px;text-align:center;
+      font-size:8px;font-weight:700;letter-spacing:.05em;
+      border-top:1.5px solid rgba(240,180,41,.25);
+      border-bottom:1px solid rgba(240,180,41,.12);
+      flex-shrink:0;
+    }
+    .f1-tagline em{color:var(--gold);font-style:normal}
+
+    /* Products 3 cols */
+    .f1-prods{
+      display:grid;grid-template-columns:repeat(3,1fr);
+      border-top:1.5px solid rgba(240,180,41,.2);
+      flex-shrink:0;
+    }
+    .f1-prod{display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.08)}
+    .f1-prod:last-child{border-right:none}
+    .f1-prod-img{height:27mm;overflow:hidden}
+    .f1-prod-img img{width:100%;height:100%;object-fit:cover;object-position:center}
+    .f1-prod-info{
+      background:var(--dk2);
+      padding:5px 5px 6px;
+      text-align:center;
+      border-top:1px solid rgba(240,180,41,.15);
+    }
+    .f1-prod-name{font-size:7px;font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:#fff;line-height:1.3;margin-bottom:1px}
+    .f1-prod-price{font-family:'Anton',sans-serif;font-size:23px;color:var(--gold);line-height:1;letter-spacing:-.01em}
+    .f1-prod-unit{font-size:7px;font-weight:700;color:rgba(255,255,255,.6)}
+
+    /* Combos */
+    .f1-combos{
+      display:grid;grid-template-columns:16px 1fr 1fr auto;
+      border-top:1.5px solid rgba(240,180,41,.2);
+      flex-shrink:0;min-height:22mm;
+    }
+    .f1-combo-tag{
+      background:var(--red);
+      display:flex;align-items:center;justify-content:center;
+      writing-mode:vertical-rl;text-orientation:mixed;
+      transform:rotate(180deg);
+      font-family:'Anton',sans-serif;font-size:11px;letter-spacing:.12em;
+      color:#fff;
+    }
+    .f1-combo-item{
+      padding:6px 8px;
+      display:flex;flex-direction:column;justify-content:center;
+      border-right:1px solid rgba(255,255,255,.08);
+    }
+    .f1-combo-dots{
+      border-bottom:1.5px dashed rgba(240,180,41,.3);
+      margin:3px 0;
+    }
+    .f1-combo-desc{font-size:7px;font-weight:700;letter-spacing:.04em;color:rgba(255,255,255,.85);line-height:1.5;text-transform:uppercase}
+    .f1-combo-price{font-family:'Anton',sans-serif;font-size:21px;color:var(--gold);line-height:1;margin-top:2px}
+    .f1-combo-photo{width:28mm;overflow:hidden}
+    .f1-combo-photo img{width:100%;height:100%;object-fit:cover;object-position:center}
+
+    /* Trust strip */
+    .f1-trust{
+      display:grid;grid-template-columns:repeat(4,1fr);
+      background:var(--dk3);
+      border-top:1.5px solid rgba(240,180,41,.2);
+      flex-shrink:0;
+    }
+    .f1-trust-item{
+      padding:7px 4px;text-align:center;
+      border-right:1px solid rgba(255,255,255,.07);
+      display:flex;flex-direction:column;align-items:center;gap:3px;
+    }
+    .f1-trust-item:last-child{border-right:none}
+    .f1-trust-ico{font-size:16px;line-height:1}
+    .f1-trust-txt{font-size:5.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;line-height:1.4;color:#fff}
+
+    /* Zone bar */
+    .f1-zone{
+      display:grid;grid-template-columns:1fr auto auto;
+      gap:10px;align-items:center;
+      padding:5px 10px;
+      border-top:1px solid rgba(240,180,41,.15);
+      background:var(--dk2);
+      flex-shrink:0;
+    }
+    .f1-zone-label{font-size:5.5px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1px}
+    .f1-zone-text{font-size:6px;font-weight:700;color:rgba(255,255,255,.85);line-height:1.4}
+    .f1-fortin{text-align:center}
+    .f1-fortin-pre{font-size:5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:1px}
+    .f1-fortin-name{font-family:'Anton',sans-serif;font-size:15px;color:var(--gold);letter-spacing:.04em}
+    .f1-zone-qr{background:#fff;padding:3px;border-radius:3px}
+    .f1-zone-qr img{width:30px;height:30px}
+
+    /* WA footer */
+    .f1-wa{
+      background:var(--wa);
+      padding:9px 12px;
+      display:flex;align-items:center;gap:10px;
+      flex-shrink:0;
+    }
+    .f1-wa-ico{font-size:30px;flex-shrink:0;line-height:1}
+    .f1-wa-main{flex:1}
+    .f1-wa-label{font-size:6px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--wa-dark);opacity:.8;margin-bottom:1px}
+    .f1-wa-num{font-family:'Anton',sans-serif;font-size:28px;color:var(--wa-dark);line-height:1;letter-spacing:.01em}
+    .f1-wa-sub{font-size:6px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--wa-dark);text-decoration:underline;opacity:.75;margin-top:1px}
+    .f1-wa-qr{background:#fff;padding:4px;border-radius:4px;flex-shrink:0}
+    .f1-wa-qr img{width:46px;height:46px}
+
+    /* URL strip */
+    .f1-url{
+      background:var(--dk);
+      padding:3px 12px;text-align:center;
+      font-size:7px;font-weight:700;letter-spacing:.06em;color:rgba(255,255,255,.45);
+      border-top:1px solid rgba(240,180,41,.1);
+      flex-shrink:0;
+    }
+
+    /* ══════════════════════════════════════════════
+       F2 — A6 HORIZONTAL  210 × 148 mm  PRECIOS ACTUALES
+    ══════════════════════════════════════════════ */
+    .f2{
+      width:210mm;height:148mm;
+      background:var(--dk);color:#fff;
+      display:flex;flex-direction:column;
+      overflow:hidden;
+      box-shadow:0 30px 70px rgba(0,0,0,.55);
+    }
+
+    .f2-header{
+      display:flex;align-items:center;gap:14px;
+      padding:12px 16px 8px;flex-shrink:0;
+    }
+    .f2-logo-block{flex-shrink:0}
+    .f2-logo{height:38px;width:auto}
+    .f2-logo-sub1{font-size:6.5px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-top:3px}
+    .f2-logo-sub2{font-size:5.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+    .f2-title-block{flex:1;text-align:center}
+    .f2-main-title{font-family:'Anton',sans-serif;font-size:44px;line-height:.9;letter-spacing:.01em;text-transform:uppercase;color:#fff}
+    .f2-sub-bar{
+      display:inline-flex;align-items:center;gap:10px;
+      margin-top:5px;
+      font-family:'Anton',sans-serif;font-size:17px;letter-spacing:.06em;color:var(--gold);
+    }
+    .f2-sub-bar .dash{color:rgba(240,180,41,.4)}
+    .f2-badge-lg{width:76px;height:76px;flex-shrink:0}
+    .f2-badge-lg .bstars{font-size:8.5px}
+    .f2-badge-lg .bt1{font-size:13px}
+    .f2-badge-lg .bt2{font-size:13px}
+
+    /* Price table */
+    .f2-table{flex:1;display:flex;flex-direction:column;padding:0 14px 8px}
+    .f2-row{
+      display:flex;align-items:center;gap:12px;
+      padding:9px 14px;border-radius:4px;margin-bottom:3px;
+    }
+    .f2-row:nth-child(odd){background:var(--dk2)}
+    .f2-row:nth-child(even){background:var(--dk3)}
+    .f2-row-ico{font-size:19px;width:26px;text-align:center;flex-shrink:0}
+    .f2-row-name{flex:1;font-size:13px;font-weight:700;color:#fff;letter-spacing:.02em}
+    .f2-row-name small{font-size:11px;font-weight:500;color:rgba(255,255,255,.55)}
+    .f2-row-price{font-family:'Anton',sans-serif;font-size:29px;color:var(--gold);letter-spacing:-.01em;white-space:nowrap}
+    .f2-row-unit{font-size:10px;font-weight:700;color:rgba(255,255,255,.55);margin-left:2px}
+
+    /* WA footer */
+    .f2-wa{
+      background:var(--wa);
+      padding:10px 16px;
+      display:flex;align-items:center;gap:12px;
+      flex-shrink:0;
+    }
+    .f2-wa-ico{font-size:32px;flex-shrink:0;line-height:1}
+    .f2-wa-label{font-size:8px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--wa-dark);opacity:.8;display:block}
+    .f2-wa-num{font-family:'Anton',sans-serif;font-size:34px;color:var(--wa-dark);line-height:1;letter-spacing:.01em}
+    .f2-wa-phone-ico{font-size:22px;margin-left:8px;vertical-align:middle}
+    .f2-wa-url{margin-left:auto;font-size:10px;font-weight:700;color:var(--wa-dark);opacity:.65;text-align:right}
+
+    /* ══════════════════════════════════════════════
+       F3 — TARJETA  90 × 55 mm  "PEDÍ DE NUEVO"
+    ══════════════════════════════════════════════ */
     .f3{
       width:90mm;height:55mm;
-      box-shadow:0 16px 40px rgba(0,0,0,.4);
-      overflow:hidden;position:relative;
-    }
-    /* Frente */
-    .f3-front{background:#0a1f17;color:#fff}
-    .f3-front-img{
-      position:absolute;inset:0;background-image:url(assets/pechuga.png);
-      background-size:cover;background-position:center 40%;
-      filter:saturate(1.1) contrast(1.05);
-    }
-    .f3-front-img::after{
-      content:"";position:absolute;inset:0;
-      background:linear-gradient(135deg,rgba(10,31,23,.92) 0%,rgba(10,31,23,.65) 60%,rgba(10,31,23,.40) 100%);
-    }
-    .f3-fcontent{
-      position:relative;z-index:2;height:100%;
-      padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;
-    }
-    .f3-fb{
-      font-family:'Anton',sans-serif;font-size:22px;letter-spacing:.04em;line-height:1;
-    }
-    .f3-fb em{color:#f0b429;font-style:normal}
-    .f3-ft-pre{font-size:8px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:#f0b429;margin-bottom:2px}
-    .f3-ft{font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.04em;text-transform:uppercase;line-height:1.05}
-    .f3-fbottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
-    .f3-fbt{font-size:8px;color:rgba(255,255,255,.7);max-width:50%}
-    .f3-fbt strong{display:block;color:#f0b429;font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.04em;font-weight:400;margin-top:2px}
-    .f3-fq{background:#fff;padding:3px;border-radius:4px;flex:0 0 auto}
-    .f3-fq img{width:50px;height:50px}
-    /* Dorso */
-    .f3-back{background:#fff;padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between}
-    .f3-bh{font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.04em;color:#0a1f17;text-transform:uppercase;border-bottom:2px solid #f0b429;padding-bottom:4px;margin-bottom:8px}
-    .f3-pl{display:grid;gap:4px;flex:1}
-    .f3-pi{display:flex;justify-content:space-between;align-items:baseline;font-size:10px;color:#0a1f17}
-    .f3-pi-n{font-weight:700;text-transform:uppercase;letter-spacing:.02em}
-    .f3-pi-v{font-family:'Anton',sans-serif;font-size:14px;letter-spacing:.01em;color:#0a1f17}
-    .f3-bf{margin-top:6px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #e8f5ee;padding-top:6px}
-    .f3-bf-l{font-size:8px;color:#666;line-height:1.2}
-    .f3-bf-l strong{font-family:'Anton',sans-serif;font-weight:400;font-size:14px;color:#0a1f17;letter-spacing:.04em;display:block;margin-top:2px}
-    .f3-bf-wa{
-      background:#25D366;color:#082c14;
-      font-family:'Anton',sans-serif;font-size:10px;
-      padding:5px 10px;border-radius:999px;letter-spacing:.04em;
-      white-space:nowrap;
+      background:var(--dk);color:#fff;
+      display:flex;flex-direction:column;
+      overflow:hidden;
+      box-shadow:0 16px 44px rgba(0,0,0,.55);
+      border-radius:3px;
     }
 
-    /* ── PRINT ──────────────────────────────────────── */
+    .f3-header{
+      padding:7px 10px 5px;
+      border-bottom:1px solid rgba(240,180,41,.25);
+      flex-shrink:0;
+    }
+    .f3-logo-row{display:flex;align-items:center;gap:6px}
+    .f3-logo{height:20px;width:auto}
+    .f3-brand-name{font-family:'Anton',sans-serif;font-size:15px;color:#fff;letter-spacing:.04em;line-height:1}
+    .f3-brand-sub{font-size:5.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-top:1px}
+
+    .f3-body{
+      flex:1;
+      display:grid;grid-template-columns:1fr auto;
+      gap:8px;align-items:center;
+      padding:6px 10px;
+    }
+    .f3-left{}
+    .f3-divider{height:1px;background:rgba(240,180,41,.3);margin-bottom:6px}
+    .f3-headline{
+      font-family:'Anton',sans-serif;font-size:24px;line-height:.9;
+      text-transform:uppercase;color:#fff;letter-spacing:.01em;margin-bottom:6px;
+    }
+    .f3-wa-row{display:flex;align-items:flex-start;gap:5px;margin-bottom:5px}
+    .f3-wa-ico{font-size:13px;margin-top:1px;flex-shrink:0}
+    .f3-wa-txt{font-size:6px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.8);line-height:1.4}
+    .f3-phone-box{
+      display:inline-flex;align-items:center;gap:6px;
+      border:1.5px solid var(--gold);border-radius:999px;
+      padding:3px 10px 3px 8px;
+    }
+    .f3-phone-ico{font-size:11px}
+    .f3-phone-num{font-family:'Anton',sans-serif;font-size:14px;color:#fff;letter-spacing:.03em}
+    .f3-qr-wrap{
+      background:#fff;padding:4px;border-radius:4px;
+      border:2.5px solid var(--gold);flex-shrink:0;
+    }
+    .f3-qr-wrap img{width:52px;height:52px}
+
+    .f3-footer{
+      background:var(--dk2);
+      padding:3px 10px;text-align:center;
+      font-size:6.5px;font-weight:700;letter-spacing:.06em;color:rgba(255,255,255,.5);
+      border-top:1px solid rgba(240,180,41,.15);flex-shrink:0;
+    }
+
+    /* ══════════════════════════════════════════════
+       F4 — A5 HORIZONTAL  210 × 148 mm  MAPLE DE HUEVOS
+    ══════════════════════════════════════════════ */
+    .f4{
+      width:210mm;height:148mm;
+      background:var(--dk);color:#fff;
+      display:flex;flex-direction:column;
+      overflow:hidden;
+      box-shadow:0 30px 70px rgba(0,0,0,.55);
+    }
+    .f4-content{
+      flex:1;
+      display:grid;grid-template-columns:1fr 48%;
+      overflow:hidden;
+    }
+
+    /* Left side */
+    .f4-left{
+      padding:13px 16px 10px;
+      display:flex;flex-direction:column;
+    }
+    .f4-logo{height:33px;width:auto;margin-bottom:3px}
+    .f4-sub1{font-size:7px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+    .f4-sub2{font-size:6px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:8px}
+    .f4-product{
+      font-family:'Anton',sans-serif;
+      font-size:52px;line-height:.88;
+      text-transform:uppercase;color:#fff;
+      letter-spacing:.01em;margin-bottom:10px;
+    }
+    .f4-price-box{
+      display:inline-block;
+      background:var(--gold);
+      border-radius:6px;
+      padding:7px 14px 6px;
+      margin-bottom:8px;
+    }
+    .f4-price{font-family:'Anton',sans-serif;font-size:44px;color:var(--dk);line-height:1;letter-spacing:-.01em}
+    .f4-price-tag{
+      font-size:7px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;
+      color:var(--dk);text-align:center;margin-top:2px;
+    }
+    .f4-info-row{display:flex;align-items:center;gap:14px;margin-top:auto}
+    .f4-info-item{display:flex;align-items:center;gap:4px;font-size:8px;font-weight:700;color:#fff}
+    .f4-info-ico{font-size:14px}
+    .f4-info-sep{color:rgba(255,255,255,.25);font-size:16px}
+
+    /* Right photo side */
+    .f4-right{position:relative;overflow:hidden}
+    .f4-right img{width:100%;height:100%;object-fit:cover;object-position:center}
+    .f4-right::before{
+      content:"";position:absolute;left:0;top:0;bottom:0;width:50px;
+      background:linear-gradient(90deg,var(--dk) 0%,transparent 100%);
+      z-index:1;pointer-events:none;
+    }
+    .f4-badge-circle{
+      position:absolute;bottom:14mm;right:12mm;z-index:2;
+      width:62px;height:62px;border-radius:50%;
+      background:#0a2416;border:3px solid var(--gold);
+      box-shadow:0 0 0 1.5px rgba(240,180,41,.3);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;
+    }
+    .f4-badge-circle .bstars{font-size:6px;letter-spacing:1.5px;color:var(--gold);margin-bottom:1px}
+    .f4-badge-circle .btext{font-family:'Anton',sans-serif;font-size:8.5px;color:#fff;line-height:1.1;letter-spacing:.04em}
+    .f4-badge-circle .btext em{color:var(--gold);font-style:normal}
+
+    /* F4 WA bar */
+    .f4-wa{
+      background:var(--wa);
+      padding:8px 14px;
+      display:flex;align-items:center;gap:10px;
+      flex-shrink:0;
+    }
+    .f4-wa-ico{font-size:26px;line-height:1;flex-shrink:0}
+    .f4-wa-label{font-size:6.5px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--wa-dark);opacity:.8;display:block}
+    .f4-wa-num{font-family:'Anton',sans-serif;font-size:26px;color:var(--wa-dark);line-height:1;letter-spacing:.01em}
+    .f4-wa-qr{margin-left:auto;background:#fff;padding:3px;border-radius:4px;flex-shrink:0}
+    .f4-wa-qr img{width:40px;height:40px}
+
+    /* F4 bottom strip */
+    .f4-bottom{
+      background:var(--dk2);
+      padding:5px 14px;
+      display:flex;align-items:center;justify-content:space-around;
+      border-top:1px solid rgba(240,180,41,.12);
+      flex-shrink:0;
+    }
+    .f4-bot-item{font-size:6.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.65);display:flex;align-items:center;gap:4px}
+    .f4-bot-sep{color:rgba(240,180,41,.3)}
+
+    /* ── PRINT ───────────────────────────────────── */
     @media print{
       body{background:#fff;padding:0}
       .pg-h,.fw-meta,.btn-imp,.btn-row{display:none!important}
       .fw{margin:0;max-width:none;page-break-after:always}
       .fw:last-child{page-break-after:avoid}
       .fw-prev{justify-content:flex-start}
-      .f1,.f2,.f3{box-shadow:none}
+      .f1,.f2,.f3,.f4{box-shadow:none}
       *{print-color-adjust:exact;-webkit-print-color-adjust:exact}
     }
   </style>
@@ -242,184 +427,375 @@
 <body>
 
 <div class="pg-h">
-  <h1>FD Avícola · Folletos minorista</h1>
-  <p>Diseño tipo cartel de carnicería: contraste alto, precios grandes, foto de producto. Hacé click en imprimir y se abre la ventana lista para PDF/imprenta.</p>
+  <h1>FD Avícola · Folletos para imprenta</h1>
+  <p>4 formatos listos para imprimir. Hacé clic en el botón de cada folleto para abrir la ventana de impresión.</p>
 </div>
 
-<!-- ════════════════════════════════════════════════════
-     F1 — A5 vertical · BUZONEO
-════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════
+     F1 — A5 VERTICAL · BUZONEO
+════════════════════════════════════════════════ -->
 <div class="fw">
   <div class="fw-meta">
-    <span class="fw-title">F1 — A5 Buzoneo</span>
+    <span class="fw-title">F1 — A5 Vertical · Buzoneo</span>
     <span class="fw-size">148 × 210 mm</span>
   </div>
   <div class="fw-prev">
     <div class="f1" id="f1">
-      <div class="f1-ribbon">¡FRESCO HOY!</div>
-      <div class="f1-brand">FD <em>Avícola</em></div>
 
-      <div class="f1-photo-wrap">
-        <img src="assets/pechuga.png" alt="Pechuga fresca" />
-      </div>
-
-      <div class="f1-headline">
-        <div class="f1-h1-pre">Pollo + Huevos a domicilio</div>
-        <div class="f1-h1">Fresco a tu <em>casa</em></div>
-      </div>
-
-      <div class="f1-prices">
-        <div class="f1-pi hero">
-          <div class="f1-pi-name">Pechuga</div>
-          <div class="f1-pi-price">$11.999<span class="f1-pi-unit">/kg</span></div>
+      <!-- HEADER -->
+      <div class="f1-header">
+        <img class="f1-logo" src="assets/logo.png" alt="FD Avícola" />
+        <div class="f1-hd-text">
+          <div class="f1-hd-sub1">Distribución mayorista y minorista</div>
+          <div class="f1-hd-sub2">de pollo refrigerado y huevos</div>
         </div>
-        <div class="f1-pi">
-          <div class="f1-pi-name">Pata muslo</div>
-          <div class="f1-pi-price">$3.999<span class="f1-pi-unit">/kg</span></div>
-        </div>
-        <div class="f1-pi">
-          <div class="f1-pi-name">Maple 30u</div>
-          <div class="f1-pi-price">$5.500</div>
+        <div class="badge-fresco f1-badge">
+          <span class="bstars">★★★</span>
+          <span class="bt1">¡FRESCO</span>
+          <span class="bt2">HOY!</span>
         </div>
       </div>
 
-      <div class="f1-cta">
+      <!-- HERO -->
+      <div class="f1-hero">
+        <h2>Pollo fresco<br/>a tu casa</h2>
+      </div>
+
+      <!-- TAGLINE -->
+      <div class="f1-tagline">
+        Precio de distribuidor. &nbsp;<em>Pedidos por WhatsApp.</em>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="f1-prods">
+        <div class="f1-prod">
+          <div class="f1-prod-img">
+            <img src="assets/pechuga.png" alt="Pechuga de pollo" />
+          </div>
+          <div class="f1-prod-info">
+            <div class="f1-prod-name">Pechuga de pollo</div>
+            <div class="f1-prod-price">$11.999</div>
+            <div class="f1-prod-unit">/kg</div>
+          </div>
+        </div>
+        <div class="f1-prod">
+          <div class="f1-prod-img">
+            <img src="assets/pata-muslo.png" alt="Pata muslo" />
+          </div>
+          <div class="f1-prod-info">
+            <div class="f1-prod-name">Pata muslo</div>
+            <div class="f1-prod-price">$3.999</div>
+            <div class="f1-prod-unit">/kg</div>
+          </div>
+        </div>
+        <div class="f1-prod">
+          <div class="f1-prod-img">
+            <img src="assets/producto-1.jpg" alt="Maple de huevos" />
+          </div>
+          <div class="f1-prod-info">
+            <div class="f1-prod-name">Maple de huevos<br/>(30 un.)</div>
+            <div class="f1-prod-price">$5.500</div>
+            <div class="f1-prod-unit">&nbsp;</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMBOS -->
+      <div class="f1-combos">
+        <div class="f1-combo-tag">COMBOS</div>
+        <div class="f1-combo-item">
+          <div class="f1-combo-desc">10 kg pechuga<br/>+ 2 maples</div>
+          <div class="f1-combo-dots"></div>
+          <div class="f1-combo-price">$130.990</div>
+        </div>
+        <div class="f1-combo-item">
+          <div class="f1-combo-desc">5 kg pata muslo<br/>+ 1 maple</div>
+          <div class="f1-combo-dots"></div>
+          <div class="f1-combo-price">$25.495</div>
+        </div>
+        <div class="f1-combo-photo">
+          <img src="assets/combo-patamuslo.png" alt="Combo" />
+        </div>
+      </div>
+
+      <!-- TRUST STRIP -->
+      <div class="f1-trust">
+        <div class="f1-trust-item">
+          <span class="f1-trust-ico">❄️</span>
+          <span class="f1-trust-txt">Cadena<br/>de frío<br/>garantizada</span>
+        </div>
+        <div class="f1-trust-item">
+          <span class="f1-trust-ico">💵</span>
+          <span class="f1-trust-txt">Pago<br/>al<br/>recibir</span>
+        </div>
+        <div class="f1-trust-item">
+          <span class="f1-trust-ico">👤</span>
+          <span class="f1-trust-txt">Atención<br/>person-<br/>alizada</span>
+        </div>
+        <div class="f1-trust-item">
+          <span class="f1-trust-ico">🚚</span>
+          <span class="f1-trust-txt">Entrega<br/>coord.<br/>GBA Norte</span>
+        </div>
+      </div>
+
+      <!-- ZONE BAR -->
+      <div class="f1-zone">
         <div>
-          <div class="f1-cta-l">Pedí por WhatsApp</div>
-          <div class="f1-cta-p">11 3946-7076</div>
-          <div class="f1-cta-w">fdavicola.com/minorista</div>
+          <div class="f1-zone-label">📍 Zona de servicio</div>
+          <div class="f1-zone-text">GBA Norte (Vicente López, Olivos,<br/>San Isidro, Tigre) y CABA</div>
         </div>
-        <div class="f1-qr">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fwa.me%2F541139467076&bgcolor=ffffff&color=082c14&margin=4&qzone=2" alt="QR" />
+        <div class="f1-fortin">
+          <div class="f1-fortin-pre">Trabajamos con productos</div>
+          <div class="f1-fortin-name">El Fortín</div>
+        </div>
+        <div class="f1-zone-qr">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https%3A%2F%2Fwa.me%2F541139467076&bgcolor=ffffff&color=082c14&margin=2" alt="QR" />
         </div>
       </div>
+
+      <!-- WA FOOTER -->
+      <div class="f1-wa">
+        <span class="f1-wa-ico">📲</span>
+        <div class="f1-wa-main">
+          <div class="f1-wa-label">Pedidos al WhatsApp</div>
+          <div class="f1-wa-num">+54 11 3946-7076</div>
+          <div class="f1-wa-sub">Solo pedidos por WhatsApp</div>
+        </div>
+        <div class="f1-wa-qr">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fwa.me%2F541139467076&bgcolor=ffffff&color=082c14&margin=3" alt="QR WhatsApp" />
+        </div>
+      </div>
+
+      <!-- URL -->
+      <div class="f1-url">🌐 fdavicola.com/minorista</div>
+
     </div>
   </div>
   <div class="btn-row">
-    <button class="btn-imp" onclick="printFolleto('f1','A5 portrait')">🖨 Imprimir A5</button>
+    <button class="btn-imp" onclick="printFolleto('f1','A5 portrait')">🖨 Imprimir A5 vertical</button>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════
-     F2 — A6 horizontal · REPARTO EN MANO
-════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════
+     F2 — A6 HORIZONTAL · PRECIOS ACTUALES
+════════════════════════════════════════════════ -->
 <div class="fw">
   <div class="fw-meta">
-    <span class="fw-title">F2 — A6 reparto en mano</span>
-    <span class="fw-size">148 × 105 mm</span>
+    <span class="fw-title">F2 — A6 Horizontal · Lista de precios</span>
+    <span class="fw-size">210 × 148 mm</span>
   </div>
   <div class="fw-prev">
     <div class="f2" id="f2">
-      <div class="f2-l">
-        <img src="assets/pechuga.png" alt="Pechuga" />
-        <div class="f2-badge">¡fresco!</div>
+
+      <!-- HEADER -->
+      <div class="f2-header">
+        <div class="f2-logo-block">
+          <img class="f2-logo" src="assets/logo.png" alt="FD Avícola" />
+          <div class="f2-logo-sub1">Distribución mayorista y minorista</div>
+          <div class="f2-logo-sub2">de pollo refrigerado y huevos</div>
+        </div>
+        <div class="f2-title-block">
+          <div class="f2-main-title">Precios actuales</div>
+          <div class="f2-sub-bar">
+            <span class="dash">—</span>
+            Lista minorista
+            <span class="dash">—</span>
+          </div>
+        </div>
+        <div class="badge-fresco f2-badge-lg">
+          <span class="bstars">★★★</span>
+          <span class="bt1">¡FRESCO</span>
+          <span class="bt2">HOY!</span>
+        </div>
       </div>
-      <div class="f2-r">
+
+      <!-- PRICE TABLE -->
+      <div class="f2-table">
+        <div class="f2-row">
+          <span class="f2-row-ico">🥩</span>
+          <span class="f2-row-name">Pechuga de pollo</span>
+          <span class="f2-row-price">$11.999</span><span class="f2-row-unit">/kg</span>
+        </div>
+        <div class="f2-row">
+          <span class="f2-row-ico">🍗</span>
+          <span class="f2-row-name">Pata muslo</span>
+          <span class="f2-row-price">$3.999</span><span class="f2-row-unit">/kg</span>
+        </div>
+        <div class="f2-row">
+          <span class="f2-row-ico">🥚</span>
+          <span class="f2-row-name">Maple de huevos <small>(30 un.)</small></span>
+          <span class="f2-row-price">$5.500</span>
+        </div>
+        <div class="f2-row">
+          <span class="f2-row-ico">📦</span>
+          <span class="f2-row-name">Combo pechuga <small>(10 kg + 2 maples)</small></span>
+          <span class="f2-row-price">$130.990</span>
+        </div>
+        <div class="f2-row">
+          <span class="f2-row-ico">📦</span>
+          <span class="f2-row-name">Combo pata muslo <small>(5 kg + 1 maple)</small></span>
+          <span class="f2-row-price">$25.495</span>
+        </div>
+      </div>
+
+      <!-- WA FOOTER -->
+      <div class="f2-wa">
+        <span class="f2-wa-ico">📲</span>
         <div>
-          <div class="f2-brand">FD <em>Avícola</em></div>
-          <div class="f2-h">Pollo<br/>fresco a<br/><em>tu casa</em></div>
-          <div class="f2-prices">
-            <div class="f2-pi"><span class="f2-pi-name">Pechuga</span><span class="f2-pi-val">$11.999/kg</span></div>
-            <div class="f2-pi"><span class="f2-pi-name">Pata muslo</span><span class="f2-pi-val">$3.999/kg</span></div>
-            <div class="f2-pi"><span class="f2-pi-name">Maple 30 u.</span><span class="f2-pi-val">$5.500</span></div>
-          </div>
+          <span class="f2-wa-label">Pedí por WhatsApp</span>
+          <div class="f2-wa-num">+54 11 3946-7076 <span class="f2-wa-phone-ico">📱</span></div>
         </div>
-        <div class="f2-cta">
-          <div class="f2-cta-info">
-            <div class="f2-cta-l">WhatsApp</div>
-            <div class="f2-cta-p">11 3946-7076</div>
-          </div>
-          <div class="f2-qr">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https%3A%2F%2Fwa.me%2F541139467076&bgcolor=ffffff&color=082c14&margin=2&qzone=1" alt="QR" />
-          </div>
-        </div>
+        <div class="f2-wa-url">🌐 fdavicola.com/minorista</div>
       </div>
+
     </div>
   </div>
   <div class="btn-row">
-    <button class="btn-imp" onclick="printFolleto('f2','A6 landscape')">🖨 Imprimir A6</button>
+    <button class="btn-imp" onclick="printFolleto('f2','210mm 148mm')">🖨 Imprimir A6 horizontal</button>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════
-     F3 — Tarjeta  Frente + Dorso
-════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════
+     F3 — TARJETA  90 × 55 mm  "PEDÍ DE NUEVO"
+════════════════════════════════════════════════ -->
 <div class="fw">
   <div class="fw-meta">
-    <span class="fw-title">F3 — Tarjeta doble faz</span>
+    <span class="fw-title">F3 — Tarjeta · Pedí de nuevo</span>
     <span class="fw-size">90 × 55 mm</span>
   </div>
   <div class="fw-prev">
-    <div class="f3-wrap">
-      <!-- Frente -->
-      <div class="f3 f3-front" id="f3-front">
-        <div class="f3-front-img"></div>
-        <div class="f3-fcontent">
+    <div class="f3" id="f3">
+
+      <!-- HEADER -->
+      <div class="f3-header">
+        <div class="f3-logo-row">
+          <img class="f3-logo" src="assets/logo.png" alt="FD Avícola" />
           <div>
-            <div class="f3-fb">FD <em>Avícola</em></div>
-            <div style="margin-top:auto"></div>
-          </div>
-          <div>
-            <div class="f3-ft-pre">Pollo fresco · Huevos</div>
-            <div class="f3-ft">a tu casa<br/>en GBA Norte</div>
-          </div>
-          <div class="f3-fbottom">
-            <div class="f3-fbt">
-              Pedí por WhatsApp
-              <strong>11 3946-7076</strong>
-            </div>
-            <div class="f3-fq">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=https%3A%2F%2Fwa.me%2F541139467076&bgcolor=ffffff&color=082c14&margin=4&qzone=2" alt="QR" />
-            </div>
+            <div class="f3-brand-name">FD Avícola</div>
+            <div class="f3-brand-sub">Pollo refrigerado y huevos</div>
           </div>
         </div>
       </div>
-      <!-- Dorso -->
-      <div class="f3 f3-back" id="f3-back">
-        <div class="f3-bh">Lista de precios</div>
-        <div class="f3-pl">
-          <div class="f3-pi"><span class="f3-pi-n">Pechuga de pollo</span><span class="f3-pi-v">$11.999/kg</span></div>
-          <div class="f3-pi"><span class="f3-pi-n">Pata muslo</span><span class="f3-pi-v">$3.999/kg</span></div>
-          <div class="f3-pi"><span class="f3-pi-n">Maple 30 huevos</span><span class="f3-pi-v">$5.500</span></div>
-          <div class="f3-pi"><span class="f3-pi-n">Combo pechuga + 2 maples</span><span class="f3-pi-v">$130.990</span></div>
-          <div class="f3-pi"><span class="f3-pi-n">Combo p. muslo + 1 maple</span><span class="f3-pi-v">$25.495</span></div>
-        </div>
-        <div class="f3-bf">
-          <div class="f3-bf-l">
-            fdavicola.com/minorista
-            <strong>11 3946-7076</strong>
+
+      <!-- BODY -->
+      <div class="f3-body">
+        <div class="f3-left">
+          <div class="f3-divider"></div>
+          <div class="f3-headline">Pedí<br/>de nuevo</div>
+          <div class="f3-wa-row">
+            <span class="f3-wa-ico">📲</span>
+            <span class="f3-wa-txt">Escaneá y hacé tu pedido<br/>por WhatsApp</span>
           </div>
-          <div class="f3-bf-wa">WhatsApp</div>
+          <div class="f3-phone-box">
+            <span class="f3-phone-ico">📱</span>
+            <span class="f3-phone-num">+54 11 3946-7076</span>
+          </div>
+        </div>
+        <div class="f3-qr-wrap">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https%3A%2F%2Fwa.me%2F541139467076&bgcolor=ffffff&color=082c14&margin=4" alt="QR WhatsApp" />
         </div>
       </div>
+
+      <!-- FOOTER -->
+      <div class="f3-footer">🌐 fdavicola.com/minorista</div>
+
     </div>
   </div>
   <div class="btn-row">
-    <button class="btn-imp" onclick="printFolleto('f3-front','portrait',true)">🖨 Frente</button>
-    <button class="btn-imp" onclick="printFolleto('f3-back','portrait',true)">🖨 Dorso</button>
+    <button class="btn-imp" onclick="printFolleto('f3','90mm 55mm')">🖨 Imprimir tarjeta</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     F4 — A5 HORIZONTAL · MAPLE DE HUEVOS
+════════════════════════════════════════════════ -->
+<div class="fw">
+  <div class="fw-meta">
+    <span class="fw-title">F4 — A5 Horizontal · Maple de huevos</span>
+    <span class="fw-size">210 × 148 mm</span>
+  </div>
+  <div class="fw-prev">
+    <div class="f4" id="f4">
+
+      <div class="f4-content">
+        <!-- LEFT -->
+        <div class="f4-left">
+          <img class="f4-logo" src="assets/logo.png" alt="FD Avícola" />
+          <div class="f4-sub1">Distribución mayorista y minorista</div>
+          <div class="f4-sub2">de pollo refrigerado y huevos</div>
+          <div class="f4-product">Maple<br/>de<br/>huevos</div>
+          <div class="f4-price-box">
+            <div class="f4-price">$5.500</div>
+            <div class="f4-price-tag">★ Precio del distribuidor ★</div>
+          </div>
+          <div class="f4-info-row">
+            <div class="f4-info-item"><span class="f4-info-ico">📦</span> 30 unidades</div>
+            <span class="f4-info-sep">|</span>
+            <div class="f4-info-item"><span class="f4-info-ico">👤</span> Directo del distribuidor</div>
+          </div>
+        </div>
+
+        <!-- RIGHT PHOTO -->
+        <div class="f4-right">
+          <img src="assets/producto-1.jpg" alt="Maple de huevos frescos" />
+          <div class="f4-badge-circle">
+            <span class="bstars">★★★</span>
+            <div class="btext">Pollo y<br/>huevos a<br/><em>tu casa</em></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WA BAR -->
+      <div class="f4-wa">
+        <span class="f4-wa-ico">📲</span>
+        <div>
+          <span class="f4-wa-label">Pedidos solo por WhatsApp</span>
+          <div class="f4-wa-num">+54 11 3946-7076</div>
+        </div>
+        <div class="f4-wa-qr">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https%3A%2F%2Fwa.me%2F541139467076&bgcolor=ffffff&color=082c14&margin=3" alt="QR" />
+        </div>
+      </div>
+
+      <!-- BOTTOM STRIP -->
+      <div class="f4-bottom">
+        <span class="f4-bot-item">📦 Pago al recibir</span>
+        <span class="f4-bot-sep">|</span>
+        <span class="f4-bot-item">👤 Atención humana</span>
+        <span class="f4-bot-sep">|</span>
+        <span class="f4-bot-item">🌐 fdavicola.com/minorista</span>
+      </div>
+
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-imp" onclick="printFolleto('f4','210mm 148mm')">🖨 Imprimir A5 horizontal</button>
   </div>
 </div>
 
 <script>
-function printFolleto(id, pageSize, isCard){
+function printFolleto(id, pageSize) {
   const el = document.getElementById(id);
   let styles = '';
   document.querySelectorAll('link[rel=stylesheet], style').forEach(s => {
     styles += s.outerHTML || ('<style>' + s.textContent + '</style>');
   });
-  const w = window.open('', '_blank', 'width=900,height=720');
-  w.document.write(`<!doctype html><html><head><meta charset="utf-8">
+  const base = window.location.href.replace(/\/[^/]*$/, '/');
+  const w = window.open('', '_blank', 'width=1000,height=800');
+  w.document.write(`<!doctype html><html><head>
+    <meta charset="utf-8">
+    <base href="${base}">
     <title>FD Avícola · Folleto</title>
     ${styles}
     <style>
       @page { size: ${pageSize}; margin: 0; }
       html, body { margin: 0; padding: 0; background: #fff; }
-      body { display: flex; justify-content: center; align-items: flex-start; padding: ${isCard ? '20mm' : '0'}; }
-      *{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+      body { display: flex; justify-content: center; align-items: flex-start; }
+      * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
     </style>
   </head><body>${el.outerHTML}</body></html>`);
   w.document.close();
-  setTimeout(() => { w.focus(); w.print(); }, 800);
+  setTimeout(() => { w.focus(); w.print(); }, 900);
 }
 </script>
 </body>
