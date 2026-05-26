@@ -221,6 +221,35 @@
         });
       });
 
+      // ── JSON-LD Product dinámico (solo en minorista.html) ──────────────
+      // Inyectamos un schema Product por SKU para que Google muestre
+      // precio + disponibilidad en rich snippets.
+      if (document.getElementById("schema-productos")) {
+        const productosSchema = productos
+          .filter((p) => SKU_TO_DATA_KEY[p.sku])
+          .map((p) => {
+            let waText;
+            if (p.tipo === "por_kg") waText = "Hola FD Avícola, quiero pedir 1 kg de " + p.nombre + ".";
+            else if (p.tipo === "unidad") waText = "Hola FD Avícola, quiero pedir 1 maple de huevos.";
+            else waText = "Hola FD Avícola, quiero el " + p.nombre + ".";
+            return {
+              "@context": "https://schema.org",
+              "@type": "Product",
+              "name": p.nombre,
+              "description": p.descripcion || p.nombre,
+              "brand": { "@type": "Brand", "name": "FD Avícola" },
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "ARS",
+                "price": String(Math.round(p.precio)),
+                "availability": "https://schema.org/InStock",
+                "url": buildWaLink(waText),
+              },
+            };
+          });
+        document.getElementById("schema-productos").textContent = JSON.stringify(productosSchema, null, 2);
+      }
+
       // Construir el mensaje WhatsApp con la cantidad elegida en el input.
       // El bot (v9+) entiende texto libre del estilo "quiero N kg de X" y arma el carrito.
       function buildMensaje(sku, cantidad) {
