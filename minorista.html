@@ -144,7 +144,12 @@
           <h2>Productos por kilo o por unidad</h2>
           <p>Coordiná tu pedido por WhatsApp. Te confirmamos disponibilidad y zona de entrega.</p>
         </header>
-        <div class="cards three-col">
+        <!-- Los productos se renderizan dinámicamente desde mn_productos
+             (Supabase). Se muestran solo los que están activos Y con
+             mostrar_en_web=true. Fallback al markup estático debajo si
+             el fetch falla (ver script.js → cargarCatalogo). -->
+        <div id="productos-dinamicos" class="cards three-col"></div>
+        <div class="cards three-col" id="productos-fallback" hidden>
           <article class="product">
             <div class="product-media">
               <img src="assets/pechuga.png" alt="Pechuga de pollo fresca" loading="lazy" width="800" height="500" />
@@ -206,7 +211,10 @@
           <h2>Pedidos armados para vos</h2>
           <p>Combos pensados para que ahorres tiempo y plata.</p>
         </header>
-        <div class="cards two-col">
+        <!-- Combos renderizados dinámicamente desde mn_productos
+             (tipo='combo' AND activo AND mostrar_en_web). -->
+        <div id="combos-dinamicos" class="cards two-col"></div>
+        <div class="cards two-col" id="combos-fallback" hidden>
           <article class="product combo">
             <div class="product-media">
               <img src="assets/combo-pechuga.png" alt="Combo pechuga + huevos" loading="lazy" width="800" height="500" />

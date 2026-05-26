@@ -169,24 +169,16 @@
     sections.forEach((s) => observer.observe(s));
   }
 
-  // ─── Catálogo dinámico desde Supabase ───────────────────────────────────
-  // Source of truth: tabla mn_productos en Supabase. Cuando cambian los
-  // precios, cambian en un solo lugar y se reflejan acá, en el bot WhatsApp
-  // y en AviGest. Si el fetch falla, mantenemos los precios del precios.json
-  // estático como fallback.
+  // ─── Catálogo 100% dinámico desde Supabase ──────────────────────────────
+  // Source of truth: tabla mn_productos en Supabase. Lo que se carga en
+  // AviGest → Minorista → Catálogo es lo que aparece en esta página
+  // (cards completos con foto, nombre, descripción, precio).
+  //
+  // Si el fetch falla, mostramos el markup estático de fallback embebido
+  // en el HTML (`#productos-fallback` y `#combos-fallback`).
   const SUPABASE_URL = "https://rcblopybnaljvoikjwqu.supabase.co";
   const SUPABASE_ANON = "sb_publishable_JenUKCfId4lGMkT_sUkerw_Y7rgpXl4";
   const WA_NUMBER = "541139467076";
-
-  // Mapeo: SKU en Supabase → key del atributo data-precio en el HTML
-  const SKU_TO_DATA_KEY = {
-    "PEC_KG": "pechuga_kg",
-    "PAT_KG": "pata_muslo_kg",
-    "MAP_HUE": "maple_huevos",
-    "PACK_FAMILIAR": "pack_familiar",
-    "PACK_ASADO": "pack_asado",
-    "PACK_FAMILIA_XL": "pack_familia_xl",
-  };
 
   function formatPrecio(n) {
     return "$" + Math.round(n).toLocaleString("es-AR");
@@ -196,7 +188,115 @@
     return "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(text);
   }
 
+  // Texto WhatsApp por SKU + cantidad. El bot v9+ entiende texto libre.
+  function buildMensaje(prod, cantidad) {
+    if (!prod) return "Hola FD Avícola, quiero hacer un pedido.";
+    if (prod.tipo === "por_kg") {
+      return "Hola FD Avícola, quiero pedir " + cantidad + " kg de " + prod.nombre + ".";
+    }
+    if (prod.tipo === "unidad") {
+      const palabra = cantidad === 1 ? "unidad" : "unidades";
+      return "Hola FD Avícola, quiero pedir " + cantidad + " " + palabra + " de " + prod.nombre + ".";
+    }
+    if (prod.tipo === "combo") {
+      return "Hola FD Avícola, quiero el " + prod.nombre +
+        (prod.descripcion ? " (" + prod.descripcion + ")" : "") + ".";
+    }
+    return "Hola FD Avícola, quiero pedir " + prod.nombre + ".";
+  }
+
+  function escHtml(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  // Imagen fallback por tipo (cuando el producto no tiene imagen_url)
+  function imagenFallback(prod) {
+    if (prod.tipo === "combo") return "assets/combo-pechuga.png";
+    const sku = (prod.sku || "").toUpperCase();
+    if (sku.includes("PAT") || sku.includes("MUSLO")) return "assets/pata-muslo.png";
+    if (sku.includes("HUE") || sku.includes("MAP")) return "assets/producto-1.jpg";
+    return "assets/pechuga.png";
+  }
+
+  // ── Renderizado de cards ──────────────────────────────────────────────
+  function renderProductoCard(prod) {
+    const imgSrc = prod.imagen_url || imagenFallback(prod);
+    const cantidadDefault = prod.tipo === "por_kg" ? 2 : 1;
+    const unidadCorta = prod.tipo === "por_kg" ? "kg" :
+                        prod.tipo === "unidad" ? (prod.nombre.toLowerCase().includes("maple") ? "maple" : "u") : "";
+    const unidadPlural = unidadCorta === "kg" ? "kg" : unidadCorta + "s";
+    const tag = prod.tipo === "por_kg"
+      ? '<span class="product-tag"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-snow"/></svg> Refrigerado</span>'
+      : '<span class="product-tag"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Fresco</span>';
+    const stepAttr = prod.tipo === "por_kg" ? "0.5" : "1";
+    const minAttr = "1";
+    const maxAttr = prod.tipo === "por_kg" ? "50" : "20";
+    const inputMode = prod.tipo === "por_kg" ? "decimal" : "numeric";
+    const qtyId = "qty-" + (prod.sku || prod.nombre).toLowerCase().replace(/[^a-z0-9]/g, "");
+
+    return (
+      '<article class="product">' +
+        '<div class="product-media">' +
+          '<img src="' + escHtml(imgSrc) + '" alt="' + escHtml(prod.nombre) + '" loading="lazy" width="800" height="500" />' +
+          tag +
+        '</div>' +
+        '<div class="product-body">' +
+          '<h3>' + escHtml(prod.nombre) + '</h3>' +
+          '<p class="product-desc">' + escHtml(prod.descripcion || '') + '</p>' +
+          '<div class="price-row"><span class="price">' + formatPrecio(prod.precio) + '</span><span class="price-unit">/ ' + escHtml(unidadCorta) + '</span></div>' +
+          '<div class="qty-row">' +
+            '<label class="qty-label" for="' + qtyId + '">Cantidad:</label>' +
+            '<input id="' + qtyId + '" type="number" class="qty-input" data-qty-for="' + escHtml(prod.sku) + '" value="' + cantidadDefault + '" min="' + minAttr + '" max="' + maxAttr + '" step="' + stepAttr + '" inputmode="' + inputMode + '" />' +
+            '<span class="qty-unit">' + escHtml(unidadPlural) + '</span>' +
+          '</div>' +
+          '<div class="product-foot"><a class="btn btn-primary" data-wa-producto="' + escHtml(prod.sku) + '" href="' + buildWaLink(buildMensaje(prod, cantidadDefault)) + '" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg> Pedir por WhatsApp</a></div>' +
+        '</div>' +
+      '</article>'
+    );
+  }
+
+  function renderComboCard(prod) {
+    const imgSrc = prod.imagen_url || imagenFallback(prod);
+    // Para combos armamos lista de "specs" desde componentes
+    let specsHtml = '';
+    if (Array.isArray(prod.componentes)) {
+      const lines = prod.componentes.map(function(c) {
+        const unidad = c.unidad || (String(c.codigo).includes("HUE") || String(c.codigo).includes("MAP") ? "maple" : "kg");
+        const plural = unidad === "kg" ? "kg" : (c.cantidad === 1 ? unidad : unidad + "s");
+        const nombre = c.nombre || c.codigo;
+        return '<li>' + escHtml(c.cantidad + ' ' + plural + ' de ' + nombre) + '</li>';
+      });
+      lines.push('<li>Ahorrás vs comprar por separado</li>');
+      specsHtml = '<ul class="specs">' + lines.join('') + '</ul>';
+    }
+    return (
+      '<article class="product combo">' +
+        '<div class="product-media">' +
+          '<img src="' + escHtml(imgSrc) + '" alt="' + escHtml(prod.nombre) + '" loading="lazy" width="800" height="500" />' +
+          '<span class="combo-badge">' + escHtml(prod.nombre) + '</span>' +
+        '</div>' +
+        '<div class="product-body">' +
+          '<h3>' + escHtml(prod.descripcion || prod.nombre) + '</h3>' +
+          (prod.descripcion ? '<p class="product-desc">' + escHtml(prod.descripcion) + '</p>' : '') +
+          specsHtml +
+          '<div class="price-row"><span class="price">' + formatPrecio(prod.precio) + '</span></div>' +
+          '<div class="product-foot"><a class="btn btn-primary" data-wa-producto="' + escHtml(prod.sku) + '" href="' + buildWaLink(buildMensaje(prod, 1)) + '" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg> Pedir combo</a></div>' +
+        '</div>' +
+      '</article>'
+    );
+  }
+
   async function cargarCatalogo() {
+    const gridProds = document.getElementById("productos-dinamicos");
+    const gridCombos = document.getElementById("combos-dinamicos");
+    const fallbackProds = document.getElementById("productos-fallback");
+    const fallbackCombos = document.getElementById("combos-fallback");
+
     try {
       const res = await fetch(SUPABASE_URL + "/rest/v1/rpc/get_catalogo_publico", {
         method: "POST",
@@ -209,82 +309,58 @@
       });
       if (!res.ok) throw new Error("HTTP " + res.status);
       const productos = await res.json();
-      const porSku = {};
-      productos.forEach((p) => { porSku[p.sku] = p; });
+      if (!Array.isArray(productos) || productos.length === 0) throw new Error("Catálogo vacío");
 
-      // Rellenar todos los <span data-precio="...">
-      Object.entries(SKU_TO_DATA_KEY).forEach(([sku, dataKey]) => {
-        const prod = porSku[sku];
-        if (!prod) return;
-        $$("[data-precio='" + dataKey + "']").forEach((el) => {
-          el.textContent = formatPrecio(prod.precio);
-        });
-      });
+      const basicos = productos.filter(function(p) { return p.tipo !== "combo"; });
+      const combos = productos.filter(function(p) { return p.tipo === "combo"; });
 
-      // ── JSON-LD Product dinámico (solo en minorista.html) ──────────────
-      // Inyectamos un schema Product por SKU para que Google muestre
-      // precio + disponibilidad en rich snippets.
+      // Renderizar productos básicos
+      if (gridProds) {
+        gridProds.innerHTML = basicos.map(renderProductoCard).join("");
+      }
+      // Renderizar combos
+      if (gridCombos) {
+        gridCombos.innerHTML = combos.map(renderComboCard).join("");
+      }
+
+      // JSON-LD Product dinámico
       if (document.getElementById("schema-productos")) {
-        const productosSchema = productos
-          .filter((p) => SKU_TO_DATA_KEY[p.sku])
-          .map((p) => {
-            let waText;
-            if (p.tipo === "por_kg") waText = "Hola FD Avícola, quiero pedir 1 kg de " + p.nombre + ".";
-            else if (p.tipo === "unidad") waText = "Hola FD Avícola, quiero pedir 1 maple de huevos.";
-            else waText = "Hola FD Avícola, quiero el " + p.nombre + ".";
-            return {
-              "@context": "https://schema.org",
-              "@type": "Product",
-              "name": p.nombre,
-              "description": p.descripcion || p.nombre,
-              "brand": { "@type": "Brand", "name": "FD Avícola" },
-              "offers": {
-                "@type": "Offer",
-                "priceCurrency": "ARS",
-                "price": String(Math.round(p.precio)),
-                "availability": "https://schema.org/InStock",
-                "url": buildWaLink(waText),
-              },
-            };
-          });
-        document.getElementById("schema-productos").textContent = JSON.stringify(productosSchema, null, 2);
+        const schema = productos.map(function(p) {
+          return {
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": p.nombre,
+            "description": p.descripcion || p.nombre,
+            "image": p.imagen_url || undefined,
+            "brand": { "@type": "Brand", "name": "FD Avícola" },
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "ARS",
+              "price": String(Math.round(p.precio)),
+              "availability": "https://schema.org/InStock",
+              "url": buildWaLink(buildMensaje(p, 1)),
+            },
+          };
+        });
+        document.getElementById("schema-productos").textContent = JSON.stringify(schema, null, 2);
       }
 
-      // Construir el mensaje WhatsApp con la cantidad elegida en el input.
-      // El bot (v9+) entiende texto libre del estilo "quiero N kg de X" y arma el carrito.
-      function buildMensaje(sku, cantidad) {
-        const prod = porSku[sku];
-        if (!prod) return "Hola FD Avícola, quiero hacer un pedido.";
-        if (prod.tipo === "por_kg") {
-          return "Hola FD Avícola, quiero pedir " + cantidad + " kg de " + prod.nombre + ".";
-        }
-        if (prod.tipo === "unidad") {
-          const palabra = cantidad === 1 ? "maple" : "maples";
-          return "Hola FD Avícola, quiero pedir " + cantidad + " " + palabra + " de huevos.";
-        }
-        if (prod.tipo === "combo") {
-          return "Hola FD Avícola, quiero el " + prod.nombre + " (" + (prod.descripcion || prod.nombre) + ").";
-        }
-        return "Hola FD Avícola, quiero pedir " + prod.nombre + ".";
-      }
-
-      // Para cada botón con data-wa-producto, sincronizarlo con su input de cantidad
-      $$("[data-wa-producto]").forEach((btn) => {
+      // Conectar inputs de cantidad → wa.me dinámico
+      const porSku = {};
+      productos.forEach(function(p) { porSku[p.sku] = p; });
+      $$("[data-wa-producto]").forEach(function(btn) {
         const sku = btn.getAttribute("data-wa-producto");
         const prod = porSku[sku];
         if (!prod) return;
-
         const qtyInput = $("[data-qty-for='" + sku + "']");
-
-        const refresh = () => {
+        function refresh() {
           let cantidad = 1;
           if (qtyInput) {
             const v = parseFloat(qtyInput.value || "0");
             cantidad = isNaN(v) || v <= 0 ? 1 : v;
           }
-          btn.setAttribute("href", buildWaLink(buildMensaje(sku, cantidad)));
-        };
-
+          btn.setAttribute("href", buildWaLink(buildMensaje(prod, cantidad)));
+        }
         refresh();
         if (qtyInput) {
           qtyInput.addEventListener("input", refresh);
@@ -292,18 +368,28 @@
         }
       });
     } catch (err) {
-      console.warn("No se pudo cargar catálogo desde Supabase, usando fallback:", err);
-      // Fallback: cargar precios.json estático (precios viejos, pero mejor que vacío)
+      console.warn("Catálogo dinámico falló, usando fallback estático:", err);
+      // Mostrar fallback estático
+      if (gridProds && fallbackProds) {
+        gridProds.hidden = true;
+        fallbackProds.hidden = false;
+      }
+      if (gridCombos && fallbackCombos) {
+        gridCombos.hidden = true;
+        fallbackCombos.hidden = false;
+      }
+      // Y rellenar precios del fallback estático con precios.json
       try {
-        const res = await fetch("data/precios.json");
-        const fallback = await res.json();
-        Object.entries(fallback).forEach(([key, precio]) => {
-          $$("[data-precio='" + key + "']").forEach((el) => {
-            el.textContent = formatPrecio(precio);
+        const r = await fetch("data/precios.json");
+        const fb = await r.json();
+        Object.entries(fb).forEach(function(entry) {
+          const k = entry[0], v = entry[1];
+          $$("[data-precio='" + k + "']").forEach(function(el) {
+            el.textContent = formatPrecio(v);
           });
         });
       } catch (e) {
-        console.error("Fallback también falló:", e);
+        console.error("Fallback precios.json también falló:", e);
       }
     }
   }
