@@ -294,8 +294,6 @@
   async function cargarCatalogo() {
     const gridProds = document.getElementById("productos-dinamicos");
     const gridCombos = document.getElementById("combos-dinamicos");
-    const fallbackProds = document.getElementById("productos-fallback");
-    const fallbackCombos = document.getElementById("combos-fallback");
 
     try {
       const res = await fetch(SUPABASE_URL + "/rest/v1/rpc/get_catalogo_publico", {
@@ -368,29 +366,20 @@
         }
       });
     } catch (err) {
-      console.warn("Catálogo dinámico falló, usando fallback estático:", err);
-      // Mostrar fallback estático
-      if (gridProds && fallbackProds) {
-        gridProds.hidden = true;
-        fallbackProds.hidden = false;
-      }
-      if (gridCombos && fallbackCombos) {
-        gridCombos.hidden = true;
-        fallbackCombos.hidden = false;
-      }
-      // Y rellenar precios del fallback estático con precios.json
-      try {
-        const r = await fetch("data/precios.json");
-        const fb = await r.json();
-        Object.entries(fb).forEach(function(entry) {
-          const k = entry[0], v = entry[1];
-          $$("[data-precio='" + k + "']").forEach(function(el) {
-            el.textContent = formatPrecio(v);
-          });
-        });
-      } catch (e) {
-        console.error("Fallback precios.json también falló:", e);
-      }
+      console.error("Catálogo dinámico falló:", err);
+      // En vez de mostrar precios viejos (que confunden al cliente), mostramos
+      // un mensaje de error claro y un CTA a WhatsApp para que pidan igual.
+      const mensajeErrorHtml =
+        '<div style="grid-column: 1/-1; text-align: center; padding: 48px 16px; ' +
+        'border: 2px dashed #d4d4d8; border-radius: 12px; color: #71717a;">' +
+        '<p style="font-size: 16px; margin: 0 0 12px;">No pudimos cargar el catálogo en este momento.</p>' +
+        '<p style="font-size: 14px; margin: 0 0 16px;">Escribinos por WhatsApp y te pasamos precios actualizados.</p>' +
+        '<a href="' + buildWaLink("Hola FD Avícola, quiero ver precios y hacer un pedido.") + '" ' +
+        'target="_blank" rel="noopener" class="btn btn-primary">' +
+        '<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg> ' +
+        'Pedir por WhatsApp</a></div>';
+      if (gridProds) gridProds.innerHTML = mensajeErrorHtml;
+      if (gridCombos) gridCombos.innerHTML = "";
     }
   }
 

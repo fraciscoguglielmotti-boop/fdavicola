@@ -146,10 +146,12 @@
         </header>
         <!-- Los productos se renderizan dinámicamente desde mn_productos
              (Supabase). Se muestran solo los que están activos Y con
-             mostrar_en_web=true. Fallback al markup estático debajo si
-             el fetch falla (ver script.js → cargarCatalogo). -->
+             mostrar_en_web=true. Ver script.js → cargarCatalogo. -->
         <div id="productos-dinamicos" class="cards three-col"></div>
-        <div class="cards three-col" id="productos-fallback" hidden>
+        <!-- HIDDEN: este markup queda solo como referencia de la estructura.
+             Si el fetch falla, JS muestra un mensaje de error en lugar de
+             estos cards (los precios viejos confundirían al cliente). -->
+        <template id="productos-fallback">
           <article class="product">
             <div class="product-media">
               <img src="assets/pechuga.png" alt="Pechuga de pollo fresca" loading="lazy" width="800" height="500" />
@@ -201,7 +203,7 @@
               <div class="product-foot"><a class="btn btn-primary" data-wa-producto="MAP_HUE" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20pedir%201%20maple%20de%20huevos." target="_blank" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg> Pedir por WhatsApp</a></div>
             </div>
           </article>
-        </div>
+        </template>
       </div>
     </section>
     <section id="combos" class="section section-cream shop-section">
@@ -214,34 +216,6 @@
         <!-- Combos renderizados dinámicamente desde mn_productos
              (tipo='combo' AND activo AND mostrar_en_web). -->
         <div id="combos-dinamicos" class="cards two-col"></div>
-        <div class="cards two-col" id="combos-fallback" hidden>
-          <article class="product combo">
-            <div class="product-media">
-              <img src="assets/combo-pechuga.png" alt="Combo pechuga + huevos" loading="lazy" width="800" height="500" />
-              <span class="combo-badge">Combo Pechuga</span>
-            </div>
-            <div class="product-body">
-              <h3>10 kg pechuga + 2 maples</h3>
-              <p class="product-desc">10 kg de pechuga de pollo + 60 huevos. Ideal para familia o freezer.</p>
-              <ul class="specs"><li>10 kg de pechuga de pollo</li><li>2 maples de huevos (60 huevos)</li><li>Ahorrás vs comprar por separado</li></ul>
-              <div class="price-row"><span class="price" data-precio="pack_familia_xl"></span></div>
-              <div class="product-foot"><a class="btn btn-primary" data-wa-producto="PACK_FAMILIA_XL" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20el%20Pack%20Familia%20XL%20(10%20kg%20pechuga%20%2B%202%20maples)." target="_blank" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg> Pedir combo</a></div>
-            </div>
-          </article>
-          <article class="product combo">
-            <div class="product-media">
-              <img src="assets/combo-patamuslo.png" alt="Combo pata muslo + huevos" loading="lazy" width="800" height="500" />
-              <span class="combo-badge">Combo Pata Muslo</span>
-            </div>
-            <div class="product-body">
-              <h3>10 kg pata muslo + 1 maple</h3>
-              <p class="product-desc">10 kg de pata muslo + 30 huevos. Combo económico para abastecer la semana.</p>
-              <ul class="specs"><li>10 kg de pata muslo</li><li>1 maple de huevos (30 huevos)</li><li>Combo económico</li></ul>
-              <div class="price-row"><span class="price" data-precio="pack_asado"></span></div>
-              <div class="product-foot"><a class="btn btn-primary" data-wa-producto="PACK_ASADO" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20el%20Pack%20Asado%20(10%20kg%20pata-muslo%20%2B%201%20maple)." target="_blank" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg> Pedir combo</a></div>
-            </div>
-          </article>
-        </div>
       </div>
     </section>
     <section id="contacto" class="section contact">
