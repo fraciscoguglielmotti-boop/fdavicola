@@ -1,7 +1,9 @@
 {
-  "pechuga_kg":      11999,
-  "pata_muslo_kg":    3999,
-  "maple_huevos":     5500,
-  "combo_pechuga":  130990,
-  "combo_pata_muslo": 25495
+  "_comentario": "Fallback estatico. Source of truth: Supabase mn_productos (la web hace fetch en runtime). Solo se usa este archivo si el fetch falla.",
+  "pechuga_kg":      12500,
+  "pata_muslo_kg":    3500,
+  "maple_huevos":     6000,
+  "pack_familiar":   63000,
+  "pack_asado":      37500,
+  "pack_familia_xl": 126000
 }
