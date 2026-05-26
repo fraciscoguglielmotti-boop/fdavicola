@@ -1476,3 +1476,27 @@ section[id]{ scroll-margin-top: 90px; }
   .shop-page .product-body{ padding:20px; }
   .shop-page .price{ font-size:26px; }
 }
+
+/* Selector de cantidad por producto */
+.qty-row{
+  display:flex; align-items:center; gap:10px;
+  margin:14px 0 10px;
+  padding:10px 12px;
+  background:rgba(15, 90, 69, 0.06);
+  border:1px solid rgba(15, 90, 69, 0.15);
+  border-radius:10px;
+}
+.qty-label{ font-size:14px; color:#36504a; font-weight:500; }
+.qty-input{
+  width:70px; padding:6px 10px;
+  font-size:16px; font-weight:600;
+  text-align:center;
+  border:1px solid #b5cdc4; border-radius:8px;
+  background:#fff; color:#0f5a45;
+}
+.qty-input:focus{ outline:2px solid #0f5a45; outline-offset:1px; border-color:#0f5a45; }
+.qty-unit{ font-size:14px; color:#36504a; }
+@media (max-width:640px){
+  .qty-row{ padding:8px 10px; }
+  .qty-input{ width:62px; }
+}

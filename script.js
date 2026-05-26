@@ -221,19 +221,46 @@
         });
       });
 
-      // Mejorar botones "Pedir por WhatsApp" con mensaje específico del producto
+      // Construir el mensaje WhatsApp con la cantidad elegida en el input.
       // El bot (v9+) entiende texto libre del estilo "quiero N kg de X" y arma el carrito.
+      function buildMensaje(sku, cantidad) {
+        const prod = porSku[sku];
+        if (!prod) return "Hola FD Avícola, quiero hacer un pedido.";
+        if (prod.tipo === "por_kg") {
+          return "Hola FD Avícola, quiero pedir " + cantidad + " kg de " + prod.nombre + ".";
+        }
+        if (prod.tipo === "unidad") {
+          const palabra = cantidad === 1 ? "maple" : "maples";
+          return "Hola FD Avícola, quiero pedir " + cantidad + " " + palabra + " de huevos.";
+        }
+        if (prod.tipo === "combo") {
+          return "Hola FD Avícola, quiero el " + prod.nombre + " (" + (prod.descripcion || prod.nombre) + ").";
+        }
+        return "Hola FD Avícola, quiero pedir " + prod.nombre + ".";
+      }
+
+      // Para cada botón con data-wa-producto, sincronizarlo con su input de cantidad
       $$("[data-wa-producto]").forEach((btn) => {
         const sku = btn.getAttribute("data-wa-producto");
         const prod = porSku[sku];
         if (!prod) return;
-        let msg = "Hola FD Avícola, quiero pedir " + prod.nombre + ".";
-        if (prod.tipo === "por_kg") msg += " Cantidad: ___ kg.";
-        if (prod.tipo === "unidad" && prod.nombre.toLowerCase().includes("maple")) {
-          msg += " Cantidad: ___ maples.";
+
+        const qtyInput = $("[data-qty-for='" + sku + "']");
+
+        const refresh = () => {
+          let cantidad = 1;
+          if (qtyInput) {
+            const v = parseFloat(qtyInput.value || "0");
+            cantidad = isNaN(v) || v <= 0 ? 1 : v;
+          }
+          btn.setAttribute("href", buildWaLink(buildMensaje(sku, cantidad)));
+        };
+
+        refresh();
+        if (qtyInput) {
+          qtyInput.addEventListener("input", refresh);
+          qtyInput.addEventListener("change", refresh);
         }
-        if (prod.tipo === "combo") msg += " (precio " + formatPrecio(prod.precio) + ")";
-        btn.setAttribute("href", buildWaLink(msg));
       });
     } catch (err) {
       console.warn("No se pudo cargar catálogo desde Supabase, usando fallback:", err);
