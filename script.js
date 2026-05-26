@@ -168,4 +168,89 @@
 
     sections.forEach((s) => observer.observe(s));
   }
+
+  // ─── Catálogo dinámico desde Supabase ───────────────────────────────────
+  // Source of truth: tabla mn_productos en Supabase. Cuando cambian los
+  // precios, cambian en un solo lugar y se reflejan acá, en el bot WhatsApp
+  // y en AviGest. Si el fetch falla, mantenemos los precios del precios.json
+  // estático como fallback.
+  const SUPABASE_URL = "https://rcblopybnaljvoikjwqu.supabase.co";
+  const SUPABASE_ANON = "sb_publishable_JenUKCfId4lGMkT_sUkerw_Y7rgpXl4";
+  const WA_NUMBER = "541139467076";
+
+  // Mapeo: SKU en Supabase → key del atributo data-precio en el HTML
+  const SKU_TO_DATA_KEY = {
+    "PEC_KG": "pechuga_kg",
+    "PAT_KG": "pata_muslo_kg",
+    "MAP_HUE": "maple_huevos",
+    "PACK_FAMILIAR": "pack_familiar",
+    "PACK_ASADO": "pack_asado",
+    "PACK_FAMILIA_XL": "pack_familia_xl",
+  };
+
+  function formatPrecio(n) {
+    return "$" + Math.round(n).toLocaleString("es-AR");
+  }
+
+  function buildWaLink(text) {
+    return "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(text);
+  }
+
+  async function cargarCatalogo() {
+    try {
+      const res = await fetch(SUPABASE_URL + "/rest/v1/rpc/get_catalogo_publico", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_ANON,
+          "Authorization": "Bearer " + SUPABASE_ANON,
+        },
+        body: "{}",
+      });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const productos = await res.json();
+      const porSku = {};
+      productos.forEach((p) => { porSku[p.sku] = p; });
+
+      // Rellenar todos los <span data-precio="...">
+      Object.entries(SKU_TO_DATA_KEY).forEach(([sku, dataKey]) => {
+        const prod = porSku[sku];
+        if (!prod) return;
+        $$("[data-precio='" + dataKey + "']").forEach((el) => {
+          el.textContent = formatPrecio(prod.precio);
+        });
+      });
+
+      // Mejorar botones "Pedir por WhatsApp" con mensaje específico del producto
+      // El bot (v9+) entiende texto libre del estilo "quiero N kg de X" y arma el carrito.
+      $$("[data-wa-producto]").forEach((btn) => {
+        const sku = btn.getAttribute("data-wa-producto");
+        const prod = porSku[sku];
+        if (!prod) return;
+        let msg = "Hola FD Avícola, quiero pedir " + prod.nombre + ".";
+        if (prod.tipo === "por_kg") msg += " Cantidad: ___ kg.";
+        if (prod.tipo === "unidad" && prod.nombre.toLowerCase().includes("maple")) {
+          msg += " Cantidad: ___ maples.";
+        }
+        if (prod.tipo === "combo") msg += " (precio " + formatPrecio(prod.precio) + ")";
+        btn.setAttribute("href", buildWaLink(msg));
+      });
+    } catch (err) {
+      console.warn("No se pudo cargar catálogo desde Supabase, usando fallback:", err);
+      // Fallback: cargar precios.json estático (precios viejos, pero mejor que vacío)
+      try {
+        const res = await fetch("data/precios.json");
+        const fallback = await res.json();
+        Object.entries(fallback).forEach(([key, precio]) => {
+          $$("[data-precio='" + key + "']").forEach((el) => {
+            el.textContent = formatPrecio(precio);
+          });
+        });
+      } catch (e) {
+        console.error("Fallback también falló:", e);
+      }
+    }
+  }
+
+  cargarCatalogo();
 })();
