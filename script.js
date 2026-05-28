@@ -260,18 +260,28 @@
     );
   }
 
-  function renderComboCard(prod) {
+  function renderComboCard(prod, prodPorSku) {
+    prodPorSku = prodPorSku || {};
     const imgSrc = prod.imagen_url || imagenFallback(prod);
     // Para combos armamos lista de "specs" desde componentes
     let specsHtml = '';
     if (Array.isArray(prod.componentes)) {
+      let precioNormal = 0;
       const lines = prod.componentes.map(function(c) {
-        const unidad = c.unidad || (String(c.codigo).includes("HUE") || String(c.codigo).includes("MAP") ? "maple" : "kg");
-        const plural = unidad === "kg" ? "kg" : (c.cantidad === 1 ? unidad : unidad + "s");
-        const nombre = c.nombre || c.codigo;
+        const ref = prodPorSku[c.codigo] || {};
+        // Nombre REAL del producto (no el código interno tipo PEC_KG)
+        const nombre = ref.nombre || c.nombre || c.codigo;
+        // Unidad según el tipo del producto, con fallback heurístico
+        let unidad;
+        if (ref.tipo === "por_kg") unidad = "kg";
+        else if (ref.tipo === "unidad" || String(c.codigo).indexOf("HUE") >= 0 || String(c.codigo).indexOf("MAP") >= 0) unidad = "maple";
+        else unidad = c.unidad || "u";
+        const plural = unidad === "kg" ? "kg" : (Number(c.cantidad) === 1 ? unidad : unidad + "s");
+        precioNormal += (Number(c.cantidad) || 0) * (Number(c.precio_unitario) || 0);
         return '<li>' + escHtml(c.cantidad + ' ' + plural + ' de ' + nombre) + '</li>';
       });
-      lines.push('<li>Ahorrás vs comprar por separado</li>');
+      const ahorro = precioNormal - Number(prod.precio);
+      lines.push('<li>' + (ahorro > 0 ? 'Ahorrás ' + formatPrecio(ahorro) + ' vs comprar por separado' : 'Ahorrás vs comprar por separado') + '</li>');
       specsHtml = '<ul class="specs">' + lines.join('') + '</ul>';
     }
     return (
@@ -312,13 +322,17 @@
       const basicos = productos.filter(function(p) { return p.tipo !== "combo"; });
       const combos = productos.filter(function(p) { return p.tipo === "combo"; });
 
+      // Mapa código (SKU) → producto, para mostrar el NOMBRE real en los combos
+      const prodPorSku = {};
+      productos.forEach(function(p) { prodPorSku[p.sku] = p; });
+
       // Renderizar productos básicos
       if (gridProds) {
         gridProds.innerHTML = basicos.map(renderProductoCard).join("");
       }
-      // Renderizar combos
+      // Renderizar combos (le pasamos el mapa para resolver nombres)
       if (gridCombos) {
-        gridCombos.innerHTML = combos.map(renderComboCard).join("");
+        gridCombos.innerHTML = combos.map(function(c) { return renderComboCard(c, prodPorSku); }).join("");
       }
 
       // JSON-LD Product dinámico
