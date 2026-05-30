@@ -178,7 +178,7 @@
   // en el HTML (`#productos-fallback` y `#combos-fallback`).
   const SUPABASE_URL = "https://rcblopybnaljvoikjwqu.supabase.co";
   const SUPABASE_ANON = "sb_publishable_JenUKCfId4lGMkT_sUkerw_Y7rgpXl4";
-  const WA_NUMBER = "541139467076";
+  const WA_NUMBER = "5491131827749";
 
   function formatPrecio(n) {
     return "$" + Math.round(n).toLocaleString("es-AR");
