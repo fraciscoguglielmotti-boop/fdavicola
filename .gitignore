@@ -1,0 +1,20 @@
+# Secretos — NUNCA subir
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Subproyectos con credenciales propias
+leads-agent/
+
+# Sistema
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# Dependencias
+node_modules/
+__pycache__/
+*.pyc

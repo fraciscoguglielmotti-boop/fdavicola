@@ -88,7 +88,7 @@
 
   <!-- ═══════════════════════════════════════════════════════════
        TRACKING — Meta Pixel + Google Analytics 4
-       Carga async, evento Lead automático en cualquier wa.me click
+       Carga async. Contact en cada wa.me; Lead solo desde el bot (CAPI)
        ═══════════════════════════════════════════════════════════ -->
   <!-- Meta Pixel -->
   <script>
@@ -115,27 +115,75 @@
     gtag('config', 'G-2NKM1LY1Y2', { page_path: window.location.pathname });
   </script>
 
-  <!-- Auto-tracking de clicks WhatsApp como evento "Lead" -->
+  <!-- Atribución de origen + eventos de contacto -->
   <script>
-    (function() {
-      function trackWhatsAppClick(e) {
-        var link = e.target.closest('a[href*="wa.me"]');
-        if (!link) return;
-        if (typeof fbq === 'function') {
-          fbq('track', 'Lead', {
-            content_name: link.dataset.waProducto || link.textContent.trim().slice(0, 50),
-            source: window.location.pathname
-          });
-        }
-        if (typeof gtag === 'function') {
-          gtag('event', 'generate_lead', {
-            event_category: 'whatsapp_click',
-            event_label: link.dataset.waProducto || 'general',
-            page_path: window.location.pathname
-          });
+    (function () {
+      // Mapea de dónde llegó la visita a un código corto.
+      var MAPA = { meta:'mt', facebook:'mt', fb:'mt', ig:'mt', instagram:'mt', google:'gg', bing:'bg' };
+
+      function origen() {
+        try {
+          var p = new URLSearchParams(location.search);
+          var s = (p.get('utm_source') || '').toLowerCase();
+          if (!s && p.get('fbclid')) s = 'meta';
+          if (!s && p.get('gclid'))  s = 'google';
+          if (s) sessionStorage.setItem('fd_src', MAPA[s] || s.slice(0, 4));
+          var c = p.get('utm_campaign');
+          if (c) sessionStorage.setItem('fd_camp', c.slice(0, 24));
+          var g = sessionStorage.getItem('fd_src');
+          if (g) return g;
+          if (document.referrer && document.referrer.indexOf('fdavicola.com') === -1) return 'ref';
+          return 'org';
+        } catch (e) { return 'org'; }
+      }
+
+      var SRC = origen();
+
+      // Agrega el codigo de origen al texto que el cliente envia por WhatsApp,
+      // para poder atribuir cada chat al boton y al canal que lo genero.
+      function sellar(raiz) {
+        (raiz || document).querySelectorAll('a[href*="wa.me"]').forEach(function (a) {
+          if (a.dataset.sellado) return;
+          try {
+            var u = new URL(a.href);
+            var t = u.searchParams.get('text') || '';
+            if (t.indexOf('[W-') === -1) {
+              u.searchParams.set('text', t + '  [W-' + (a.dataset.cta || 'gen') + '-' + SRC + ']');
+              a.setAttribute('href', u.toString());
+            }
+            a.dataset.sellado = '1';
+          } catch (e) {}
+        });
+      }
+
+      function iniciar() {
+        sellar(document);
+        // Los productos se cargan dinamicamente: sellamos lo que aparezca despues.
+        if (window.MutationObserver) {
+          new MutationObserver(function () { sellar(document); })
+            .observe(document.body, { childList: true, subtree: true });
         }
       }
-      document.addEventListener('click', trackWhatsAppClick, true);
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', iniciar);
+      } else { iniciar(); }
+
+      // "Contact" = alguien abrio la conversacion. NO es un lead calificado.
+      // El evento "Lead" lo dispara el bot por la API de Conversiones solo
+      // cuando el contacto da zona dentro del radio y 5 cajones o mas.
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('a[href*="wa.me"]');
+        if (!a) return;
+        var cta = a.dataset.cta || 'gen';
+        var camp = sessionStorage.getItem('fd_camp') || '';
+        if (typeof fbq === 'function') {
+          fbq('track', 'Contact', { content_name: cta, source: SRC, campaign: camp });
+        }
+        if (typeof gtag === 'function') {
+          gtag('event', 'click_whatsapp', { cta: cta, origen: SRC, campana: camp });
+        }
+      }, true);
     })();
   </script>
 </head>
@@ -159,15 +207,9 @@
     <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z"/></symbol>
   </svg>
 
-  <!-- Banner minorista -->
-  <div class="promo-banner" id="promo-banner" role="banner" aria-label="Tienda minorista">
-    <span class="promo-banner-text">🐔 ¿Comprás para tu casa? Ahora vendemos <strong>por kilo y por unidad</strong> —</span>
-    <a class="promo-banner-cta" href="minorista.html">Ver tienda minorista</a>
-    <button class="promo-banner-close" aria-label="Cerrar" onclick="this.closest('.promo-banner').style.display='none'">✕</button>
-  </div>
 
   <!-- Floating WhatsApp -->
-  <a class="wa-float" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista." target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
+  <a data-cta="float" class="wa-float" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista." target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
     <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
     <span class="wa-float-text">Pedir ahora</span>
   </a>
@@ -189,7 +231,6 @@
           <li><a href="#cobertura">Cobertura</a></li>
           <li><a href="#nosotros">Nosotros</a></li>
           <li><a href="#faq">Preguntas</a></li>
-          <li><a href="minorista.html" class="nav-minorista">🛒 Tienda</a></li>
         </ul>
       </nav>
 
@@ -198,7 +239,7 @@
           <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>
           <span>+54 11 3946-7076</span>
         </a>
-        <a class="btn btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista." target="_blank" rel="noopener">
+        <a data-cta="header" class="btn btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista." target="_blank" rel="noopener">
           <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
           Cotizar
         </a>
@@ -219,7 +260,7 @@
             WhatsApp. Cotizamos en minutos según tu zona y volumen.
           </p>
           <div class="hero-cta">
-            <a class="btn btn-lg btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista.%20Mi%20zona%20es%20____%20y%20necesito%20____." target="_blank" rel="noopener">
+            <a data-cta="hero" class="btn btn-lg btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista.%20Mi%20zona%20es%20____%20y%20necesito%20____." target="_blank" rel="noopener">
               <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
               Cotizar por WhatsApp
             </a>
@@ -325,7 +366,7 @@
                 <li>Coordinación rápida por WhatsApp</li>
               </ul>
               <div class="product-foot">
-                <a class="btn btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista%20de%20pollo%20El%20Fort%C3%ADn.%20Mi%20zona%20es%20____%20y%20necesito%20____%20cajones%20(aprox.)." target="_blank" rel="noopener">
+                <a data-cta="pollo" class="btn btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20precio%20mayorista%20de%20pollo%20El%20Fort%C3%ADn.%20Mi%20zona%20es%20____%20y%20necesito%20____%20cajones%20(aprox.)." target="_blank" rel="noopener">
                   <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
                   Consultar precio
                 </a>
@@ -348,7 +389,7 @@
                 <li>Venta mayorista por cajón</li>
               </ul>
               <div class="product-foot">
-                <a class="btn btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20consultar%20precios%20mayoristas%20de%20huevos%20(N1%20y%20N2).%20Mi%20zona%20es%20____%20y%20necesito%20____%20cajones." target="_blank" rel="noopener">
+                <a data-cta="huevos" class="btn btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20consultar%20precios%20mayoristas%20de%20huevos%20(N1%20y%20N2).%20Mi%20zona%20es%20____%20y%20necesito%20____%20cajones." target="_blank" rel="noopener">
                   <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
                   Consultar precio
                 </a>
@@ -422,7 +463,7 @@
         </div>
 
         <div class="center" style="margin-top: 40px;">
-          <a class="btn btn-lg btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20coordinar%20mi%20primer%20pedido.%20Mi%20zona%20es%20____%20y%20necesito%20____." target="_blank" rel="noopener">
+          <a data-cta="pedido" class="btn btn-lg btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20coordinar%20mi%20primer%20pedido.%20Mi%20zona%20es%20____%20y%20necesito%20____." target="_blank" rel="noopener">
             <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
             Empezar ahora
           </a>
@@ -489,7 +530,7 @@
           <div id="coverage-map" class="map" role="region" aria-label="Mapa de zonas de cobertura"></div>
           <p class="map-foot">
             ¿No estás seguro si llegamos a tu zona?
-            <a class="btn btn-dark" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20saber%20si%20llegan%20a%20mi%20zona:%20____" target="_blank" rel="noopener">
+            <a data-cta="zona" class="btn btn-dark" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20saber%20si%20llegan%20a%20mi%20zona:%20____" target="_blank" rel="noopener">
               <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
               Consultar mi zona
             </a>
@@ -581,11 +622,11 @@
             <p>Te respondemos con precios, disponibilidad y condiciones. Para cotizar rápido: <strong>zona + cantidad + frecuencia</strong>.</p>
 
             <div class="contact-card-actions">
-              <a class="btn btn-lg btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20recibir%20la%20lista%20mayorista.%20Mi%20zona%20es%20____%20y%20necesito%20____." target="_blank" rel="noopener">
+              <a data-cta="lista" class="btn btn-lg btn-primary" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20recibir%20la%20lista%20mayorista.%20Mi%20zona%20es%20____%20y%20necesito%20____." target="_blank" rel="noopener">
                 <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
                 Pedir lista
               </a>
-              <a class="btn btn-lg btn-ghost-light" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20pollo%20y%20huevos.%20Zona:%20____%20Cantidades:%20____%20Frecuencia:%20____." target="_blank" rel="noopener">
+              <a data-cta="cotizar" class="btn btn-lg btn-ghost-light" href="https://wa.me/541139467076?text=Hola%20FD%20Av%C3%ADcola,%20quiero%20cotizar%20pollo%20y%20huevos.%20Zona:%20____%20Cantidades:%20____%20Frecuencia:%20____." target="_blank" rel="noopener">
                 <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg>
                 Cotizar pedido
               </a>
